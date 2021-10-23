@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         var testp1 = document.getElementById('test-p-1');
         var testp2 = document.getElementById('test-p-2');
@@ -21,33 +22,9 @@
             xhr.send();
         };
 
-        function mycallback(err, data) {
-            if (err !== null) {
-                alert('Something went wrong: ' + err);
-            } else {
-                alert('FIRST: ' + JSON.stringify(data));
-            }
-        }
-
-        var getJSONObj = getJSON('https://api.spotify.com/v1/me/tracks', mycallback);
-
-        //display the data
-        alert('SECOND: ' + JSON.stringify(getJSONObj));
-        /*
-        var top100artists = [];
-        for (var i = 0; i < 100; i++) {
-            try {
-                //alert(JSON.stringify(data.items[i].track.artists[0].id));
-                top100artistsInner.push(data.items[0].track.artists[0].id);
-            } catch { }
-        }
-        */
-
-        /*
-        var top100artists;
         getJSON('https://api.spotify.com/v1/me/tracks',
         function(err, data) {
-            var top100artistsInner = [];
+            var top100artists = [];
             if (err !== null) {
                 alert('Something went wrong: ' + err);
             } else {
@@ -55,12 +32,11 @@
                 for (var i = 0; i < 100; i++) {
                     try {
                         //alert(JSON.stringify(data.items[i].track.artists[0].id));
-                        top100artistsInner.push(data.items[0].track.artists[0].id);
+                        top100artists.push(data.items[0].track.artists[0].id);
                     } catch { }
                 }
             }
         });
-        */
         //alert(JSON.stringify(getJSON2));
         //alert(JSON.stringify(top100artists));
 
