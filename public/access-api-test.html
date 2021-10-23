@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script>
+        var getJSON = function(url, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.responseType = 'json';
+            xhr.onload = function() {
+            var status = xhr.status;
+            if (status === 200) {
+                callback(null, xhr.response);
+            } else {
+                callback(status, xhr.response);
+            }
+            };
+            xhr.send();
+        };
+
+        getJSON('https://catfact.ninja/fact',
+        function(err, data) {
+            if (err !== null) {
+                alert('Something went wrong: ' + err);
+            } else {
+                //alert('Your query count: ' + data.query.count);
+                //alert(data);
+
+                var testp1 = document.getElementById('test-p-1');
+                var testp2 = document.getElementById('test-p-2');
+                testp1.innerText = data.fact;
+                testp2.innerText = data.length;
+            }
+        });
+    </script>
+    <body>
+        <p id="test-p-1"></p>
+        <p id="test-p-2"></p>
+    </body>
+</html>
