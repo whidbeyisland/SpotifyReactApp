@@ -1,35 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
     <script>
-        var getJSON = function(url, callback) {
+        var testp1 = document.getElementById('test-p-1');
+        var testp2 = document.getElementById('test-p-2');
+        var getJSON;
+
+        getJSON = function(url, callback) {
             var xhr = new XMLHttpRequest();
             xhr.open('GET', url, true);
+            xhr.setRequestHeader('Authorization', 'Bearer BQAnpOxxebb6CFfkXuQ0fmFIJNi0ZN5Cw7aI10UO3SL3eRGdWPHIhZ2jNY0MVyUgMPIWuoaVs91l7rP5yH1aOjGvNAe0H_NRh6sn7BIVNJfKz_amhdfh9lK0ydWjiqkbh8TaIdD3YfXsShZTR6iTPicIVeXo6YHZW_t7CXbiQOcUrvONH-6KBiEgYU78Jg');
             xhr.responseType = 'json';
             xhr.onload = function() {
-            var status = xhr.status;
-            if (status === 200) {
-                callback(null, xhr.response);
-            } else {
-                callback(status, xhr.response);
-            }
+                var status = xhr.status;
+                if (status === 200) {
+                    callback(null, xhr.response);
+                } else {
+                    callback(status, xhr.response);
+                }
             };
             xhr.send();
         };
 
-        getJSON('https://catfact.ninja/fact',
-        function(err, data) {
+        function mycallback(err, data) {
             if (err !== null) {
                 alert('Something went wrong: ' + err);
             } else {
-                //alert('Your query count: ' + data.query.count);
-                //alert(data);
+                alert('FIRST: ' + JSON.stringify(data));
+            }
+        }
 
-                var testp1 = document.getElementById('test-p-1');
-                var testp2 = document.getElementById('test-p-2');
-                testp1.innerText = data.fact;
-                testp2.innerText = data.length;
+        var getJSONObj = getJSON('https://api.spotify.com/v1/me/tracks', mycallback);
+
+        //display the data
+        alert('SECOND: ' + JSON.stringify(getJSONObj));
+        /*
+        var top100artists = [];
+        for (var i = 0; i < 100; i++) {
+            try {
+                //alert(JSON.stringify(data.items[i].track.artists[0].id));
+                top100artistsInner.push(data.items[0].track.artists[0].id);
+            } catch { }
+        }
+        */
+
+        /*
+        var top100artists;
+        getJSON('https://api.spotify.com/v1/me/tracks',
+        function(err, data) {
+            var top100artistsInner = [];
+            if (err !== null) {
+                alert('Something went wrong: ' + err);
+            } else {
+                //alert(JSON.stringify(data));
+                for (var i = 0; i < 100; i++) {
+                    try {
+                        //alert(JSON.stringify(data.items[i].track.artists[0].id));
+                        top100artistsInner.push(data.items[0].track.artists[0].id);
+                    } catch { }
+                }
             }
         });
+        */
+        //alert(JSON.stringify(getJSON2));
+        //alert(JSON.stringify(top100artists));
+
+        /*
+        var top100artistsgenres = [];
+        for (var i = 0; i < top100artists.length; i++) {
+            getJSON('https://api.spotify.com/v1/artists/' + top100artists[i],
+            function(err, data) {
+                if (err !== null) {
+                    alert('Something went wrong: ' + err);
+                } else {
+                    try {
+                        top100artistsgenres.push(JSON.stringify(data.genres));
+                        //alert(data.genres);
+                    } catch { }
+                }
+            });
+        }
+        */
+
+        //testp1.innerText = top100artistsgenres;
+
     </script>
     <body>
         <p id="test-p-1"></p>
