@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var testp1 = document.getElementById('test-p-1');
+        var testp2 = document.getElementById('test-p-2');
+        
+        var max = 50;
+        var reqheader = 'BQD_PpCynugA4CRyetwfpcteiCNDYW70nt1ITfi048aBcIO59Z4aol6tj9YvKuUkS9UbQUggCKuDVfLn-A7robQsB9wfSZqHwbneB-FN9Ai8oP65DCcUI75c9Bf48_dKcMNcCDcqFp80wfBA42d90DYEwD6P9xkCJmwsyFIgXf5dsOIXw4RMDEWPldTfmw';
+        var special_value;
+
+        $(document).ready(docReadyFunc);
+
+        function docReadyFunc() {
+            $.ajax({
+                url: 'https://api.spotify.com/v1/me/tracks?limit=' + max,
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + reqheader
+                },
+                success: function(resultA) {
+                    special_value = resultA;
+                    var top100artists = [];
+
+                    for (var i = 0; i < max; i++) {
+                        try {
+                            top100artists.push(resultA.items[i].track.artists[0].id);
+                        } catch {}
+                    }
+
+                    var top100artistsgenres = [];
+                    for (var i = 0; i < top100artists.length; i++) {
+                        function getAjax(){
+                            return $.ajax({
+                                    url: 'https://api.spotify.com/v1/artists/' + top100artists[i],
+                                    type: 'GET',
+                                    headers: {
+                                        'Authorization': 'Bearer ' + reqheader
+                                    },
+                                    success: function(resultB) {
+
+                                    }
+                            })
+                        }
+                        getAjax().done(function(response){
+                            $('#test-p-1').after('<p>' + response.genres + '</p>');
+                        });
+                    }
+                }
+            });
+
+            //handle the HTML <p></p> genre tags now
+        };
+
+    </script>
+    <body>
+        <p id="test-p-1">Genres:</p>
+        <p id="test-p-2"></p>
+    </body>
+</html>
