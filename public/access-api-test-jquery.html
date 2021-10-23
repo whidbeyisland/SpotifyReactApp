@@ -2,11 +2,12 @@
 <html lang="en">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+        //var testdiv1 = document.getElementById('test-div-1');
         var testp1 = document.getElementById('test-p-1');
         var testp2 = document.getElementById('test-p-2');
         
         var max = 50;
-        var reqheader = 'BQD_PpCynugA4CRyetwfpcteiCNDYW70nt1ITfi048aBcIO59Z4aol6tj9YvKuUkS9UbQUggCKuDVfLn-A7robQsB9wfSZqHwbneB-FN9Ai8oP65DCcUI75c9Bf48_dKcMNcCDcqFp80wfBA42d90DYEwD6P9xkCJmwsyFIgXf5dsOIXw4RMDEWPldTfmw';
+        var reqheader = 'BQBFemh7RaPy9Y1-8Y6Ohb1iSqE9-33I2JXxmXTdKEuJWC8RKUIzZ_Ko02mo7aQr41G8Itx2tuVrm9g-AlKOseahRpFINPOq3bf6fRCXWhXSlYEVLNsVfXnLhemNlfmn46uELBoa-Qry8jcRs4_IvYR3_zR4TtkMcAR62QhLUAZ0wDXrmOue-ZSS-4xLXQ';
         var special_value;
 
         $(document).ready(docReadyFunc);
@@ -28,33 +29,81 @@
                         } catch {}
                     }
 
-                    var top100artistsgenres = [];
                     for (var i = 0; i < top100artists.length; i++) {
-                        function getAjax(){
+                        function getAjax() {
                             return $.ajax({
+                                    //https://api.spotify.com/v1/artists/
                                     url: 'https://api.spotify.com/v1/artists/' + top100artists[i],
                                     type: 'GET',
                                     headers: {
                                         'Authorization': 'Bearer ' + reqheader
                                     },
-                                    success: function(resultB) {
-
-                                    }
+                                    success: function(resultB) { }
                             })
                         }
-                        getAjax().done(function(response){
+                        getAjax().done(function(response) {
                             $('#test-p-1').after('<p>' + response.genres + '</p>');
+                        });
+                        getAjax().fail(function(error) {
+                            $('#test-p-1').after('<p>null</p>');
                         });
                     }
                 }
             });
 
-            //handle the HTML <p></p> genre tags now
+            var intervalId = window.setInterval(doMLStuff, 1000);
+
+            function doMLStuff() {
+                var testdiv1 = document.getElementById('test-div-1');
+                var testp2 = document.getElementById('test-p-2');
+
+                var genreCounts = new Object();
+                if (testdiv1.children.length >= max + 1) {
+                    clearInterval(intervalId);
+
+                    var testDiv1Children = testdiv1.children;
+                    for (var i = 1; i < testDiv1Children.length; i++) {
+                        var str = testDiv1Children[i].innerText;
+                        try {
+                            var thisDivGenres = str.split(',');
+                            for (var j = 0; j < thisDivGenres.length; j++) {
+                                if (genreCounts[thisDivGenres[j]] == null) {
+                                    genreCounts[thisDivGenres[j]] = 1;
+                                }
+                                else {
+                                    genreCounts[thisDivGenres[j]]++;
+                                }
+                            }
+                        } catch { }
+                    }
+                }
+
+                var dictString = '';
+                var genreCountsKeys = Object.keys(genreCounts);
+                function sortByCount(array) {
+                    return array.sort(function(a, b) {
+                        var x = genreCounts[a];
+                        var y = genreCounts[b];
+                        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+                    });
+                }
+                sortByCount(genreCountsKeys);
+                
+                for (var i = 0; i < genreCountsKeys.length; i++) {
+                    dictString += genreCountsKeys[i] + ': ' + genreCounts[genreCountsKeys[i]] + '\n';
+                }
+                
+                //alert(dictString);
+                testp2.innerText = dictString;
+            }
+
         };
 
     </script>
     <body>
-        <p id="test-p-1">Genres:</p>
+        <div id="test-div-1">
+            <p id="test-p-1">Genres:</p>
+        </div>
         <p id="test-p-2"></p>
     </body>
 </html>
