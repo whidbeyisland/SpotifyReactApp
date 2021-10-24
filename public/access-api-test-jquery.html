@@ -2,21 +2,18 @@
 <html lang="en">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        //var testdiv1 = document.getElementById('test-div-1');
-        //var testp1 = document.getElementById('test-p-1');
-        //var testp2 = document.getElementById('test-p-2');
-        
         var counter = 0;
         var max = 50;
         var maxCycles = 5;
         var thisCycle = 0;
         var reqheader = 'BQAe3GD_4sS2LrHAf-O9JW8LrFh86hWkJCrR7bFwW8J8CaLqzVK2GindEBJQHk5b74U5s2dQqvGByzXwgYDr6lhJ_uncZMPbfyiFyZNdsVE3U94J7aNLLpfrIoUn6alSMrme_PSpbtBuCzD6mlNj0T-bSuA50TNwSNHRS4t5VeSeCKop-JAg9u2tQAS2GA';
         var special_value;
-        var intervalId = window.setInterval(checkIfReady, 1000);
+        var intervalId;
 
         $(document).ready(requestSongs(50, thisCycle));
 
         function requestSongs(_max, _thisCycle) {
+            window.setInterval(checkIfReady, 1000);
             $.ajax({
                 url: 'https://api.spotify.com/v1/me/tracks?limit=' + _max + '&offset=' + _max * _thisCycle,
                 type: 'GET',
@@ -61,10 +58,9 @@
             var testp2 = document.getElementById('test-p-2');
 
             if (testdiv1.children.length >= max * thisCycle + 1) {
-                //clearInterval(intervalId);
+                clearInterval(intervalId);
                 
                 thisCycle++;
-                alert(thisCycle);
                 if (thisCycle < maxCycles) {
                     requestSongs(max, thisCycle);
                 } else {
