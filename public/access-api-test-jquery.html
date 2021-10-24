@@ -6,14 +6,21 @@
         var max = 50;
         var maxCycles = 5;
         var thisCycle = 0;
-        var reqheader = 'BQAe3GD_4sS2LrHAf-O9JW8LrFh86hWkJCrR7bFwW8J8CaLqzVK2GindEBJQHk5b74U5s2dQqvGByzXwgYDr6lhJ_uncZMPbfyiFyZNdsVE3U94J7aNLLpfrIoUn6alSMrme_PSpbtBuCzD6mlNj0T-bSuA50TNwSNHRS4t5VeSeCKop-JAg9u2tQAS2GA';
+        var reqheader = 'BQBtx23hRL9BgtQtzY1KRMzYXA7wo6XG7fC2K9CdQeQAr6yYCAmRrMr-xe0WSKF6-2XSLSqHzqlF4mrBPedivWYLKt-qCW77dFVm7eaE9GTgKEDxuIiL_yUvDMM0IqW147L_V4Gorv3enL0JMfXtUc4R5f39YDvi7amHOwgcR3Q4V9igZpY5sxGsb2ELxw';
+        var reqheader2 = 'BQBdgC2AueY9kXhhgaBBEf7yO8meMMB5NC0yn_tAGjc636qTl-6JaKNeRaPLb1-nDJ2dOoTk8BrNrtKzeaV7OZ9ocQ4ITOEG25ydO8dviMNeBWK9wYLSSSr2HJqLZCU1CMEbkc2eSBRsyErFA9X5W0OrgQUKh1O28d-Hvt2TwV-FGHfnTxjTA4cPlD8XAtwYjD_q-6AZNkm4Uaj1vpxKaBWa1cVneuwNE8aIlPGqLVsVuQh-K6lasq9v';
         var special_value;
         var intervalId;
 
-        $(document).ready(requestSongs(50, thisCycle));
+        const urlParams = new URLSearchParams(document.location.search);
+        const user_id = urlParams.get('userid');
+
+        //intervalId = window.setInterval(checkIfReady, 1000);
+
+        $(document).ready(createPlaylist);
+        //$(document).ready(requestSongs(50, thisCycle));
 
         function requestSongs(_max, _thisCycle) {
-            window.setInterval(checkIfReady, 1000);
+            //window.setInterval(checkIfReady, 1000);
             $.ajax({
                 url: 'https://api.spotify.com/v1/me/tracks?limit=' + _max + '&offset=' + _max * _thisCycle,
                 type: 'GET',
@@ -58,12 +65,13 @@
             var testp2 = document.getElementById('test-p-2');
 
             if (testdiv1.children.length >= max * thisCycle + 1) {
-                clearInterval(intervalId);
+                //clearInterval(intervalId);
                 
                 thisCycle++;
                 if (thisCycle < maxCycles) {
                     requestSongs(max, thisCycle);
                 } else {
+                    clearInterval(intervalId);
                     doMLStuff();
                 }
             }
@@ -76,8 +84,6 @@
 
             var genreCounts = new Object();
             if (testdiv1.children.length >= max + 1) {
-                clearInterval(intervalId);
-
                 var testDiv1Children = testdiv1.children;
                 for (var i = 1; i < testDiv1Children.length; i++) {
                     var str = testDiv1Children[i].innerText;
@@ -109,10 +115,106 @@
             for (var i = 0; i < genreCountsKeys.length; i++) {
                 dictString += genreCountsKeys[i] + ': ' + genreCounts[genreCountsKeys[i]] + '\n';
             }
+
+            /*
+            generate playlist based on top 10 genres: take the 10 lowest predicted genres based on the top 10 that
+            are within the algorithm, and for each one, pull 5 random songs from the radio playlist for that genre
+            */
+            //allowedGenres: just set as a placeholder for now
+            //alert('got here');
+            var allowedGenres = ['pop', 'rock', 'country', 'dance pop', 'indie rock', 'alternative rock', 'permanent wave',
+            'alternative metal', 'new rave', 'punk', 'indie soul', 'indie poptimism', 'nu metal', 'emo', 'indietronica',
+            'indie soul', 'urban contemporary', 'pop rap', 'classic rock', 'trance', 'soft rock', 'indie soul'];
+            var top10Genres = [];
+            var i = 0;
+            var genresMatched = 0;
+            while (genresMatched < 10) {
+                try {
+                    if (allowedGenres.includes(genreCountsKeys[i])) {
+                        top10Genres.push(genreCountsKeys[i]);
+                        genresMatched++;
+                    }
+                    i++;
+                } catch { }
+            }
+            alert(top10Genres);
+            //createPlaylist(top10Genres);
             
-            //alert(dictString);
-            testp2.innerText = dictString;
+            //testp2.innerText = dictString;
         }
+
+        function createPlaylist() {
+            //intervalId = window.setInterval(checkIfReady, 1000);
+            //alert('got here');
+            //alert(user_id);
+
+            $.ajax({
+                url: 'https://api.spotify.com/v1/users/' + user_id + '/playlists',
+                type: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accepts': 'application/json',
+                    'Authorization': 'Bearer ' + reqheader2
+                },
+                data: {
+                    'name': 'Worst Songs ' + Math.floor(Math.random() * 1000000),
+                    'description': 'Just try them!',
+                    'public': false
+                },
+                dataType: 'json',
+                success: function(resultA) {
+                    alert('hey!');
+                },
+                error: function(err) {
+                    alert(user_id + '..........');
+                    alert(JSON.stringify(err));
+                }
+            });
+
+
+
+
+            /*
+            //just as a reference
+            $.ajax({
+                url: 'https://api.spotify.com/v1/me/tracks?limit=' + _max + '&offset=' + _max * _thisCycle,
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + reqheader
+                },
+                success: function(resultA) {
+                    special_value = resultA;
+                    var top100artists = [];
+
+                    for (var i = 0; i < _max; i++) {
+                        try {
+                            top100artists.push(resultA.items[i].track.artists[0].id);
+                        } catch {}
+                    }
+
+                    for (var i = 0; i < top100artists.length; i++) {
+                        function getAjax() {
+                            return $.ajax({
+                                    url: 'https://api.spotify.com/v1/artists/' + top100artists[i],
+                                    type: 'GET',
+                                    headers: {
+                                        'Authorization': 'Bearer ' + reqheader
+                                    },
+                                    success: function(resultB) { }
+                            })
+                        }
+                        getAjax().done(function(response) {
+                            counter++;
+                            $('#test-p-1').after('<p>' + response.genres + '</p>');
+                        });
+                        getAjax().fail(function(error) {
+                            $('#test-p-1').after('<p>null</p>');
+                        });
+                    }
+                }
+            });
+            */
+        };
 
     </script>
     <body>
