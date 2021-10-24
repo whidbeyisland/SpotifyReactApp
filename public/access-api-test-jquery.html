@@ -3,18 +3,22 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         //var testdiv1 = document.getElementById('test-div-1');
-        var testp1 = document.getElementById('test-p-1');
-        var testp2 = document.getElementById('test-p-2');
+        //var testp1 = document.getElementById('test-p-1');
+        //var testp2 = document.getElementById('test-p-2');
         
+        var counter = 0;
         var max = 50;
-        var reqheader = 'BQBFemh7RaPy9Y1-8Y6Ohb1iSqE9-33I2JXxmXTdKEuJWC8RKUIzZ_Ko02mo7aQr41G8Itx2tuVrm9g-AlKOseahRpFINPOq3bf6fRCXWhXSlYEVLNsVfXnLhemNlfmn46uELBoa-Qry8jcRs4_IvYR3_zR4TtkMcAR62QhLUAZ0wDXrmOue-ZSS-4xLXQ';
+        var maxCycles = 5;
+        var thisCycle = 0;
+        var reqheader = 'BQAe3GD_4sS2LrHAf-O9JW8LrFh86hWkJCrR7bFwW8J8CaLqzVK2GindEBJQHk5b74U5s2dQqvGByzXwgYDr6lhJ_uncZMPbfyiFyZNdsVE3U94J7aNLLpfrIoUn6alSMrme_PSpbtBuCzD6mlNj0T-bSuA50TNwSNHRS4t5VeSeCKop-JAg9u2tQAS2GA';
         var special_value;
+        var intervalId = window.setInterval(checkIfReady, 1000);
 
-        $(document).ready(docReadyFunc);
+        $(document).ready(requestSongs(50, thisCycle));
 
-        function docReadyFunc() {
+        function requestSongs(_max, _thisCycle) {
             $.ajax({
-                url: 'https://api.spotify.com/v1/me/tracks?limit=' + max,
+                url: 'https://api.spotify.com/v1/me/tracks?limit=' + _max + '&offset=' + _max * _thisCycle,
                 type: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + reqheader
@@ -23,7 +27,7 @@
                     special_value = resultA;
                     var top100artists = [];
 
-                    for (var i = 0; i < max; i++) {
+                    for (var i = 0; i < _max; i++) {
                         try {
                             top100artists.push(resultA.items[i].track.artists[0].id);
                         } catch {}
@@ -32,7 +36,6 @@
                     for (var i = 0; i < top100artists.length; i++) {
                         function getAjax() {
                             return $.ajax({
-                                    //https://api.spotify.com/v1/artists/
                                     url: 'https://api.spotify.com/v1/artists/' + top100artists[i],
                                     type: 'GET',
                                     headers: {
@@ -42,6 +45,7 @@
                             })
                         }
                         getAjax().done(function(response) {
+                            counter++;
                             $('#test-p-1').after('<p>' + response.genres + '</p>');
                         });
                         getAjax().fail(function(error) {
@@ -50,54 +54,69 @@
                     }
                 }
             });
+        };
 
-            var intervalId = window.setInterval(doMLStuff, 1000);
+        function checkIfReady() {
+            var testdiv1 = document.getElementById('test-div-1');
+            var testp2 = document.getElementById('test-p-2');
 
-            function doMLStuff() {
-                var testdiv1 = document.getElementById('test-div-1');
-                var testp2 = document.getElementById('test-p-2');
+            if (testdiv1.children.length >= max * thisCycle + 1) {
+                //clearInterval(intervalId);
+                
+                thisCycle++;
+                alert(thisCycle);
+                if (thisCycle < maxCycles) {
+                    requestSongs(max, thisCycle);
+                } else {
+                    doMLStuff();
+                }
+            }
+        }
 
-                var genreCounts = new Object();
-                if (testdiv1.children.length >= max + 1) {
-                    clearInterval(intervalId);
+        function doMLStuff() {
+            alert(counter);
+            var testdiv1 = document.getElementById('test-div-1');
+            var testp2 = document.getElementById('test-p-2');
 
-                    var testDiv1Children = testdiv1.children;
-                    for (var i = 1; i < testDiv1Children.length; i++) {
-                        var str = testDiv1Children[i].innerText;
-                        try {
-                            var thisDivGenres = str.split(',');
-                            for (var j = 0; j < thisDivGenres.length; j++) {
-                                if (genreCounts[thisDivGenres[j]] == null) {
-                                    genreCounts[thisDivGenres[j]] = 1;
-                                }
-                                else {
-                                    genreCounts[thisDivGenres[j]]++;
-                                }
+            var genreCounts = new Object();
+            if (testdiv1.children.length >= max + 1) {
+                clearInterval(intervalId);
+
+                var testDiv1Children = testdiv1.children;
+                for (var i = 1; i < testDiv1Children.length; i++) {
+                    var str = testDiv1Children[i].innerText;
+                    try {
+                        var thisDivGenres = str.split(',');
+                        for (var j = 0; j < thisDivGenres.length; j++) {
+                            if (genreCounts[thisDivGenres[j]] == null) {
+                                genreCounts[thisDivGenres[j]] = 1;
                             }
-                        } catch { }
-                    }
+                            else {
+                                genreCounts[thisDivGenres[j]]++;
+                            }
+                        }
+                    } catch { }
                 }
-
-                var dictString = '';
-                var genreCountsKeys = Object.keys(genreCounts);
-                function sortByCount(array) {
-                    return array.sort(function(a, b) {
-                        var x = genreCounts[a];
-                        var y = genreCounts[b];
-                        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-                    });
-                }
-                sortByCount(genreCountsKeys);
-                
-                for (var i = 0; i < genreCountsKeys.length; i++) {
-                    dictString += genreCountsKeys[i] + ': ' + genreCounts[genreCountsKeys[i]] + '\n';
-                }
-                
-                //alert(dictString);
-                testp2.innerText = dictString;
             }
 
-        };
+            var dictString = '';
+            var genreCountsKeys = Object.keys(genreCounts);
+            function sortByCount(array) {
+                return array.sort(function(a, b) {
+                    var x = genreCounts[a];
+                    var y = genreCounts[b];
+                    return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+                });
+            }
+            sortByCount(genreCountsKeys);
+            
+            for (var i = 0; i < genreCountsKeys.length; i++) {
+                dictString += genreCountsKeys[i] + ': ' + genreCounts[genreCountsKeys[i]] + '\n';
+            }
+            
+            //alert(dictString);
+            testp2.innerText = dictString;
+        }
 
     </script>
     <body>
