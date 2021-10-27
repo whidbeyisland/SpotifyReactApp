@@ -10,11 +10,14 @@
         var reqheader2 = 'BQDMfhI5pE5sVAGm1WRWtOqrcEsJg4sVfvImYoX_ivXaYRCCaCtQkMOpaEQqoQMqEF-WiP_6yhthQyTWA-Tj_W9OU72L9U13MvA-d84YoihYuhMVpD0_AWa6bul7llqxv3gJr_LKw8157mKDLlSlm7uG3iRsOCsNBm90ZQ4n8w2TuXudizPzKCfrR1gImKQOKc4fTI2Kbg9t3q7CXX0UX5bwoxQWr1QkTfPeHbChFRPtw471smhcN6SI';
         var special_value;
         var intervalId;
+        var requestSongs_done = false;
+        var generatePlaylist_done = false;
+        var eachGenreSongs_done = [];
 
         const urlParams = new URLSearchParams(document.location.search);
         const user_id = urlParams.get('userid');
 
-        //intervalId = window.setInterval(checkIfReady, 1000);
+        intervalId = window.setInterval(checkIfReady, 1000);
 
 
 
@@ -68,17 +71,27 @@
             var testdiv1 = document.getElementById('test-div-1');
             var testp2 = document.getElementById('test-p-2');
 
-            if (testdiv1.children.length >= max * thisCycle + 1) {
-                //clearInterval(intervalId);
-                
-                thisCycle++;
-                if (thisCycle < maxCycles) {
-                    requestSongs(max, thisCycle);
-                } else {
-                    clearInterval(intervalId);
-                    doMLStuff();
-                }
+            if (generatePlaylist_done == true) {
+                alert('hey!');
             }
+
+            /*
+            if (requestSongs_done == false) {
+                if (testdiv1.children.length >= max * thisCycle + 1) {
+                    thisCycle++;
+                    if (thisCycle < maxCycles) {
+                        requestSongs(max, thisCycle);
+                    } else {
+                        //doMLStuff();
+                    }
+                }
+            } else if (generatePlaylist_done == false) {
+
+            } else {
+
+            }
+            */
+            
         }
 
         function doMLStuff() {
@@ -148,10 +161,6 @@
         }
 
         function createPlaylist(_top10Genres) {
-            //intervalId = window.setInterval(checkIfReady, 1000);
-            //alert('got here');
-            //alert(user_id);
-
             $.ajax({
                 url: 'https://api.spotify.com/v1/users/' + user_id + '/playlists',
                 type: 'POST',
@@ -167,14 +176,14 @@
                 }),
                 dataType: 'json',
                 success: function(resultA) {
-                    alert('hey!');
+                    //alert('hey!');
+                    generatePlaylist_done = true;
                 },
                 error: function(err) {
                     alert(user_id + '..........');
                     alert(JSON.stringify(err));
                 }
             });
-            
 
 
 
