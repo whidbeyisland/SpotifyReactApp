@@ -7,7 +7,7 @@
         var maxCycles = 5;
         var thisCycle = 0;
         var reqheader = 'BQBtx23hRL9BgtQtzY1KRMzYXA7wo6XG7fC2K9CdQeQAr6yYCAmRrMr-xe0WSKF6-2XSLSqHzqlF4mrBPedivWYLKt-qCW77dFVm7eaE9GTgKEDxuIiL_yUvDMM0IqW147L_V4Gorv3enL0JMfXtUc4R5f39YDvi7amHOwgcR3Q4V9igZpY5sxGsb2ELxw';
-        var reqheader2 = 'BQBdgC2AueY9kXhhgaBBEf7yO8meMMB5NC0yn_tAGjc636qTl-6JaKNeRaPLb1-nDJ2dOoTk8BrNrtKzeaV7OZ9ocQ4ITOEG25ydO8dviMNeBWK9wYLSSSr2HJqLZCU1CMEbkc2eSBRsyErFA9X5W0OrgQUKh1O28d-Hvt2TwV-FGHfnTxjTA4cPlD8XAtwYjD_q-6AZNkm4Uaj1vpxKaBWa1cVneuwNE8aIlPGqLVsVuQh-K6lasq9v';
+        var reqheader2 = 'BQDMfhI5pE5sVAGm1WRWtOqrcEsJg4sVfvImYoX_ivXaYRCCaCtQkMOpaEQqoQMqEF-WiP_6yhthQyTWA-Tj_W9OU72L9U13MvA-d84YoihYuhMVpD0_AWa6bul7llqxv3gJr_LKw8157mKDLlSlm7uG3iRsOCsNBm90ZQ4n8w2TuXudizPzKCfrR1gImKQOKc4fTI2Kbg9t3q7CXX0UX5bwoxQWr1QkTfPeHbChFRPtw471smhcN6SI';
         var special_value;
         var intervalId;
 
@@ -16,7 +16,11 @@
 
         //intervalId = window.setInterval(checkIfReady, 1000);
 
-        $(document).ready(createPlaylist);
+
+
+
+        var test_top10genres = ['new rave', 'punk', 'indie soul', 'indie poptimism', 'nu metal'];
+        $(document).ready(createPlaylist(test_top10genres));
         //$(document).ready(requestSongs(50, thisCycle));
 
         function requestSongs(_max, _thisCycle) {
@@ -138,12 +142,12 @@
                 } catch { }
             }
             alert(top10Genres);
-            //createPlaylist(top10Genres);
+            createPlaylist(top10Genres);
             
             //testp2.innerText = dictString;
         }
 
-        function createPlaylist() {
+        function createPlaylist(_top10Genres) {
             //intervalId = window.setInterval(checkIfReady, 1000);
             //alert('got here');
             //alert(user_id);
@@ -153,14 +157,14 @@
                 type: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accepts': 'application/json',
+                    'Accept': 'application/json',
                     'Authorization': 'Bearer ' + reqheader2
                 },
-                data: {
-                    'name': 'Worst Songs ' + Math.floor(Math.random() * 1000000),
+                data: JSON.stringify({
+                    'name': 'Worst Songs ' + Math.floor(Math.random() * 1000000).toString(),
                     'description': 'Just try them!',
                     'public': false
-                },
+                }),
                 dataType: 'json',
                 success: function(resultA) {
                     alert('hey!');
@@ -170,7 +174,7 @@
                     alert(JSON.stringify(err));
                 }
             });
-
+            
 
 
 
