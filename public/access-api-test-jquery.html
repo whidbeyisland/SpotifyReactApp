@@ -7,12 +7,15 @@
         var maxCycles = 5;
         var thisCycle = 0;
         var reqheader = 'BQBtx23hRL9BgtQtzY1KRMzYXA7wo6XG7fC2K9CdQeQAr6yYCAmRrMr-xe0WSKF6-2XSLSqHzqlF4mrBPedivWYLKt-qCW77dFVm7eaE9GTgKEDxuIiL_yUvDMM0IqW147L_V4Gorv3enL0JMfXtUc4R5f39YDvi7amHOwgcR3Q4V9igZpY5sxGsb2ELxw';
-        var reqheader2 = 'BQDMfhI5pE5sVAGm1WRWtOqrcEsJg4sVfvImYoX_ivXaYRCCaCtQkMOpaEQqoQMqEF-WiP_6yhthQyTWA-Tj_W9OU72L9U13MvA-d84YoihYuhMVpD0_AWa6bul7llqxv3gJr_LKw8157mKDLlSlm7uG3iRsOCsNBm90ZQ4n8w2TuXudizPzKCfrR1gImKQOKc4fTI2Kbg9t3q7CXX0UX5bwoxQWr1QkTfPeHbChFRPtw471smhcN6SI';
+        var reqheader2 = 'BQAE4OrURdHo6kfQCykx12m0pBjvT0d9oxoWo0y9YLWyIJsKZ6fHTc5Lk8njBZPQ-0hJtxdrxfkevwWQsP-0caPn7jUJsvQSabxL_YyEEBut1rRv8qWcxQkiHAgvVkXNpMhDkttRr4QeJnZgHdJ_YJe8w7z9zEvbJXjsgA8PDiDT8naKtfLbJdj9v5EMDZmeT9eDlZ9zkaWDg1uqnsAS9FkmVAM4t_3cShonLZGrUsnBGfbNBnxw6OZ0';
+        var reqheader3 = 'BQAjXbL6vmXrFHbe6klsd5g6WXPsrrfyANFQBUWowh3zJ-Sf4jib_UXcv_Yz4FqGc3xyCzsEsEzJgOFXYwHIqafeOveW2qHHBjfL81aXnBNxs0i0wwDNXa3PimSW8cViLK-7SX7TGnJeaLnTwE316qvGy47KDZjCgOMp2XjY5OwD5RMlv8DblrmD7eepm-qM03b3LMaoKL9PM-i841iWTjvYfoEiO-fMqudvhwCUP-cixgceongwkZnW';
         var special_value;
         var intervalId;
         var requestSongs_done = false;
         var generatePlaylist_done = false;
-        var eachGenreSongs_done = [];
+        var top10Genres;
+        var curGenreIndex = 0;
+        var playlist_id = '';
 
         const urlParams = new URLSearchParams(document.location.search);
         const user_id = urlParams.get('userid');
@@ -22,8 +25,10 @@
 
 
 
-        var test_top10genres = ['new rave', 'punk', 'indie soul', 'indie poptimism', 'nu metal'];
-        $(document).ready(createPlaylist(test_top10genres));
+        test_playlist_id = '1gtte2hJH9eSuVtwYerurB';
+        $(document).ready(addSongsToPlaylist(test_playlist_id, 'punk'));
+        //var test_top10genres = ['new rave', 'punk', 'indie soul', 'indie poptimism', 'nu metal'];
+        //$(document).ready(createPlaylist(test_top10genres));
         //$(document).ready(requestSongs(50, thisCycle));
 
         function requestSongs(_max, _thisCycle) {
@@ -71,10 +76,6 @@
             var testdiv1 = document.getElementById('test-div-1');
             var testp2 = document.getElementById('test-p-2');
 
-            if (generatePlaylist_done == true) {
-                alert('hey!');
-            }
-
             /*
             if (requestSongs_done == false) {
                 if (testdiv1.children.length >= max * thisCycle + 1) {
@@ -82,13 +83,15 @@
                     if (thisCycle < maxCycles) {
                         requestSongs(max, thisCycle);
                     } else {
-                        //doMLStuff();
+                        doMLStuff();
                     }
                 }
-            } else if (generatePlaylist_done == false) {
-
-            } else {
-
+            } else if (generatePlaylist_done == true) {
+                if (curGenreIndex < top10Genres.length) {
+                    clearInterval(intervalId);
+                    curGenreIndex++;
+                    addSongsToPlaylist(playlist_id, top10Genres[curGenreIndex - 1]);
+                }
             }
             */
             
@@ -138,11 +141,10 @@
             are within the algorithm, and for each one, pull 5 random songs from the radio playlist for that genre
             */
             //allowedGenres: just set as a placeholder for now
-            //alert('got here');
             var allowedGenres = ['pop', 'rock', 'country', 'dance pop', 'indie rock', 'alternative rock', 'permanent wave',
             'alternative metal', 'new rave', 'punk', 'indie soul', 'indie poptimism', 'nu metal', 'emo', 'indietronica',
             'indie soul', 'urban contemporary', 'pop rap', 'classic rock', 'trance', 'soft rock', 'indie soul'];
-            var top10Genres = [];
+            var _top10Genres = [];
             var i = 0;
             var genresMatched = 0;
             while (genresMatched < 10) {
@@ -154,29 +156,66 @@
                     i++;
                 } catch { }
             }
-            alert(top10Genres);
-            createPlaylist(top10Genres);
+            alert(_top10Genres);
+            top10Genres = _top10Genres;
+            createPlaylist(_top10Genres);
             
             //testp2.innerText = dictString;
         }
 
         function createPlaylist(_top10Genres) {
+            //TODO: get ID of playlist once it's created so you can POST songs to it
+
+            function getAjax() {
+                return $.ajax({
+                        url: 'https://api.spotify.com/v1/users/' + user_id + '/playlists',
+                        type: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'Authorization': 'Bearer ' + reqheader2
+                        },
+                        data: JSON.stringify({
+                            'name': 'Worst Songs ' + Math.floor(Math.random() * 1000000).toString(),
+                            'description': 'Just try them!',
+                            'public': false
+                        }),
+                        dataType: 'json',
+                        success: function(resultA) {
+                            //alert(JSON.stringify(resultA));
+                            //console.log(JSON.stringify(resultA));
+                            generatePlaylist_done = true;
+                        },
+                        error: function(err) {
+                            alert(user_id + '..........');
+                            alert(JSON.stringify(err));
+                        }
+                });
+            }
+            getAjax().done(function(response) {
+                playlist_id = response.id;
+                $('#test-p-2').after('<p>' + response.id + '</p>');
+            });
+            getAjax().fail(function(error) {
+                $('#test-p-2').after('<p>null</p>');
+            });
+            
+        };
+
+        function addSongsToPlaylist(_playlist_id, _genre) {
+            //TODO: figure out how to put "uris" parameter in this request
+
             $.ajax({
-                url: 'https://api.spotify.com/v1/users/' + user_id + '/playlists',
+                url: 'https://api.spotify.com/v1/playlists/' + _playlist_id + '/tracks',
                 type: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Authorization': 'Bearer ' + reqheader2
+                    'Authorization': 'Bearer ' + reqheader3
                 },
-                data: JSON.stringify({
-                    'name': 'Worst Songs ' + Math.floor(Math.random() * 1000000).toString(),
-                    'description': 'Just try them!',
-                    'public': false
-                }),
-                dataType: 'json',
                 success: function(resultA) {
-                    //alert('hey!');
+                    alert(JSON.stringify(resultA));
+                    console.log(JSON.stringify(resultA));
                     generatePlaylist_done = true;
                 },
                 error: function(err) {
@@ -184,56 +223,15 @@
                     alert(JSON.stringify(err));
                 }
             });
-
-
-
-            /*
-            //just as a reference
-            $.ajax({
-                url: 'https://api.spotify.com/v1/me/tracks?limit=' + _max + '&offset=' + _max * _thisCycle,
-                type: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + reqheader
-                },
-                success: function(resultA) {
-                    special_value = resultA;
-                    var top100artists = [];
-
-                    for (var i = 0; i < _max; i++) {
-                        try {
-                            top100artists.push(resultA.items[i].track.artists[0].id);
-                        } catch {}
-                    }
-
-                    for (var i = 0; i < top100artists.length; i++) {
-                        function getAjax() {
-                            return $.ajax({
-                                    url: 'https://api.spotify.com/v1/artists/' + top100artists[i],
-                                    type: 'GET',
-                                    headers: {
-                                        'Authorization': 'Bearer ' + reqheader
-                                    },
-                                    success: function(resultB) { }
-                            })
-                        }
-                        getAjax().done(function(response) {
-                            counter++;
-                            $('#test-p-1').after('<p>' + response.genres + '</p>');
-                        });
-                        getAjax().fail(function(error) {
-                            $('#test-p-1').after('<p>null</p>');
-                        });
-                    }
-                }
-            });
-            */
-        };
+        }
 
     </script>
     <body>
         <div id="test-div-1">
             <p id="test-p-1">Genres:</p>
         </div>
-        <p id="test-p-2"></p>
+        <div id="test-div-2">
+            <p id="test-p-2">Playlist ID:</p>
+        </div>
     </body>
 </html>
