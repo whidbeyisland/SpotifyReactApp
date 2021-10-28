@@ -7,8 +7,7 @@
         var maxCycles = 5;
         var thisCycle = 0;
         var reqheader = 'BQBtx23hRL9BgtQtzY1KRMzYXA7wo6XG7fC2K9CdQeQAr6yYCAmRrMr-xe0WSKF6-2XSLSqHzqlF4mrBPedivWYLKt-qCW77dFVm7eaE9GTgKEDxuIiL_yUvDMM0IqW147L_V4Gorv3enL0JMfXtUc4R5f39YDvi7amHOwgcR3Q4V9igZpY5sxGsb2ELxw';
-        var reqheader2 = 'BQAE4OrURdHo6kfQCykx12m0pBjvT0d9oxoWo0y9YLWyIJsKZ6fHTc5Lk8njBZPQ-0hJtxdrxfkevwWQsP-0caPn7jUJsvQSabxL_YyEEBut1rRv8qWcxQkiHAgvVkXNpMhDkttRr4QeJnZgHdJ_YJe8w7z9zEvbJXjsgA8PDiDT8naKtfLbJdj9v5EMDZmeT9eDlZ9zkaWDg1uqnsAS9FkmVAM4t_3cShonLZGrUsnBGfbNBnxw6OZ0';
-        var reqheader3 = 'BQAjXbL6vmXrFHbe6klsd5g6WXPsrrfyANFQBUWowh3zJ-Sf4jib_UXcv_Yz4FqGc3xyCzsEsEzJgOFXYwHIqafeOveW2qHHBjfL81aXnBNxs0i0wwDNXa3PimSW8cViLK-7SX7TGnJeaLnTwE316qvGy47KDZjCgOMp2XjY5OwD5RMlv8DblrmD7eepm-qM03b3LMaoKL9PM-i841iWTjvYfoEiO-fMqudvhwCUP-cixgceongwkZnW';
+        var reqheader2 = 'BQBSNGJEj1xFiE7AZFwxuxQddJrVXrfljO2_11bkgkCtiz935ZUX425ID3ICSzA3SPdrualTxmONaV9fWYMzFBCMoppq4gL0lqeICe2mYFuEhiuhDv79z3L9CjuOrx9QimyI-C35WAonUtRLm1tULqxpe1brLKOYt1um5JTlpb95EdZobZQbk-CGdxEFmASLjpguSvHUIJRtR1zVN0uMvkp6bWNUrJwxKH8rc5_kc2jPRCCGstitN7sP';
         var special_value;
         var intervalId;
         var requestSongs_done = false;
@@ -211,8 +210,12 @@
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Authorization': 'Bearer ' + reqheader3
+                    'Authorization': 'Bearer ' + reqheader2
                 },
+                data: JSON.stringify({
+                    'uris': ['spotify:track:7g3jW7rQ81Ddoqu5vxvqYi']
+                }),
+                dataType: 'json',
                 success: function(resultA) {
                     alert(JSON.stringify(resultA));
                     console.log(JSON.stringify(resultA));
