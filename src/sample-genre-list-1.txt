@@ -1,0 +1,222 @@
+pop: 40
+rock: 37
+country: 29
+dance pop: 28
+indie rock: 27
+modern rock: 27
+contemporary country: 27
+country road: 25
+alternative rock: 23
+indie pop: 23
+permanent wave: 18
+alternative metal: 18
+modern country rock: 17
+pop rock: 17
+emo: 17
+nu metal: 17
+electropop: 16
+post-grunge: 16
+alternative dance: 14
+indietronica: 14
+south african rock: 13
+edm: 12
+pop dance: 12
+new rave: 12
+punk: 11
+indie soul: 11
+indie poptimism: 11
+r&b: 11
+urban contemporary: 11
+stomp and holler: 10
+neo mellow: 10
+pop punk: 10
+post-teen pop: 10
+riot grrrl: 10
+progressive house: 9
+mellow gold: 9
+art rock: 9
+boy band: 9
+chillwave: 9
+country rock: 9
+classic rock: 8
+trance: 7
+soft rock: 7
+album rock: 7
+alternative pop: 7
+dream pop: 7
+neo soul: 7
+art pop: 6
+progressive electro house: 6
+electro house: 6
+country pop: 6
+tropical house: 6
+neo-synthpop: 6
+olympia wa indie: 6
+acoustic pop: 6
+new wave: 6
+dance rock: 6
+post-punk: 6
+uplifting trance: 5
+alternative emo: 5
+dreamo: 5
+classic progressive house: 5
+anti-folk: 5
+grunge: 5
+country dawn: 5
+: 5
+modern alternative rock: 5
+bakersfield sound: 5
+progressive trance: 4
+canadian indie: 4
+roots rock: 4
+hindustani classical: 4
+indian classical: 4
+anthem emo: 4
+brooklyn indie: 4
+industrial metal: 4
+indie punk: 4
+minneapolis punk: 4
+metropopolis: 4
+indiecoustica: 4
+pop rap: 4
+experimental hip hop: 4
+oklahoma country: 4
+british soul: 4
+pop soul: 4
+soul: 4
+midwest emo: 4
+rap: 4
+chill r&b: 4
+little rock indie: 4
+big beat: 3
+baroque pop: 3
+quebec indie: 3
+folk: 3
+folk rock: 3
+folk-pop: 3
+hindustani instrumental: 3
+big room: 3
+blues rock: 3
+progressive rock: 3
+symphonic rock: 3
+aggrotech: 3
+dark electro: 3
+dark wave: 3
+ebm: 3
+electro-industrial: 3
+futurepop: 3
+denton tx indie: 3
+experimental pop: 3
+uk alternative pop: 3
+shimmer pop: 3
+gbvfi: 3
+hardcore punk: 3
+post-hardcore: 3
+power pop: 3
+art punk: 3
+funk rock: 3
+zolo: 3
+milwaukee hip hop: 3
+uk pop: 3
+hip hop: 3
+kiwi rock: 3
+neo-psychedelic: 3
+portland hip hop: 3
+psychedelic pop: 3
+rap metal: 3
+alt z: 3
+deep underground hip hop: 3
+kentucky hip hop: 3
+modern blues rock: 3
+cowboy western: 3
+hip pop: 3
+socal pop punk: 3
+rap rock: 3
+electronica: 2
+bubblegrunge: 2
+small room: 2
+singer-songwriter: 2
+bansuri: 2
+garage rock: 2
+garage rock revival: 2
+uk contemporary r&b: 2
+pop edm: 2
+dutch trance: 2
+otacore: 2
+la indie: 2
+canadian pop: 2
+heartland rock: 2
+psychedelic rock: 2
+new wave pop: 2
+piano rock: 2
+new americana: 2
+canadian folk: 2
+lgbtq+ hip hop: 2
+breakbeat: 2
+hardcore techno: 2
+rave: 2
+redneck: 2
+nashville sound: 2
+outlaw country: 2
+pop r&b: 2
+christian rock: 2
+canadian punk: 1
+deep uplifting trance: 1
+progressive uplifting trance: 1
+german techno: 1
+house: 1
+alternative country: 1
+chicago indie: 1
+world fusion: 1
+australian r&b: 1
+indie jazz: 1
+shiver pop: 1
+russian edm: 1
+electric blues: 1
+dutch house: 1
+slap house: 1
+modern uplift: 1
+freak folk: 1
+lo-fi: 1
+experimental indie rock: 1
+anime: 1
+j-pixie: 1
+japanese electropop: 1
+classic bollywood: 1
+indie r&b: 1
+modern alternative pop: 1
+bedroom pop: 1
+oakland indie: 1
+indie surf: 1
+eugene indie: 1
+philly indie: 1
+downtempo: 1
+canadian contemporary r&b: 1
+australian indie: 1
+australian indie folk: 1
+australian indie rock: 1
+modern power pop: 1
+jangle pop: 1
+new romantic: 1
+paisley underground: 1
+madchester: 1
+uk post-punk: 1
+alternative hip hop: 1
+canadian americana: 1
+deep new americana: 1
+indie folk: 1
+alternative r&b: 1
+brostep: 1
+washington indie: 1
+athens indie: 1
+lilith: 1
+dream smp: 1
+reggae fusion: 1
+new jack swing: 1
+quiet storm: 1
+east coast hip hop: 1
+gangster rap: 1
+queens hip hop: 1
+melodic metalcore: 1
+metalcore: 1
+okc indie: 1
