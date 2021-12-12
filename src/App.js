@@ -90,6 +90,16 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <div id="test-div-1">
+              <p id="test-p-1">Genres:</p>
+          </div>
+          <div id="test-div-2">
+              <p id="test-p-2">Playlist ID:</p>
+          </div>
+          <div id="test-div-3">
+              <p id="test-p-3">Songs for each genre:</p>
+          </div>
+
           <img src={logo} className="App-logo" alt="logo" />
           {!this.state.token && (
             <a
