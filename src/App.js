@@ -5,6 +5,7 @@ import hash from "./hash";
 import Player from "./Player";
 import logo from "./logo.svg";
 import "./App.css";
+import TestComponent from './TestComponent.js'
 
 class App extends Component {
   constructor() {
@@ -90,6 +91,9 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <TestComponent/>
+          <TestComponent/>
+
           <div id="test-div-1">
               <p id="test-p-1">Genres:</p>
           </div>
