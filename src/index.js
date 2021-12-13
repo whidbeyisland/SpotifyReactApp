@@ -40,7 +40,10 @@ var playlist_id = '';
 const urlParams = new URLSearchParams(document.location.search);
 const user_id = urlParams.get('userid');
 
-intervalId = window.setInterval(checkIfReady, 1000);
+//intervalId = window.setInterval(checkIfReady, 1000);
+
+
+
 
 /*
 top10Genres = ['pop', 'punk', 'indie soul', 'indie poptimism', 'nu metal'];
