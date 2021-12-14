@@ -14,7 +14,8 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-image: linear-gradient(to bottom right, #96034b, #ffb19c);
+  /*background-color: #282c34;*/
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -37,9 +38,42 @@
   }
 }
 
+/* custom styles */
 
+.app-title {
+  font-family: Georgia, serif;
+  font-size: 32px;
+  transform: scaleY(2.5);
+  line-height: 1;
+  margin: 5px;
+  margin-top: 40px;
+  color: #fcc721;
+}
 
+.app-subtitle {
+  font-family: Georgia, serif;
+  font-size: 16px;
+  line-height: 1;
+  margin: 5px;
+  margin-top: 15px;
+  color: #fcc721;
+}
 
 .song-artwork-container {
   display: flex;
+  margin-top: 20px;
+}
+
+.playlist-header {
+  font-family: Georgia, serif;
+  font-size: 16px;
+  line-height: 1;
+  margin: 5px;
+  margin-top: 40px;
+}
+
+.p-transparent {
+  font-family: Georgia, serif;
+  font-size: 11px;
+  opacity: 0.5;
 }

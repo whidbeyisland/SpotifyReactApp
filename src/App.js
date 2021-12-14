@@ -91,12 +91,36 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <p className="app-title">TubaTube</p>
+          <p className="app-subtitle">Expand your horizons</p>
+
+          <p className="playlist-header">From your new playlist...</p>
+          <p className="p-transparent">(Look in your Spotify playlists for "Worst Songs 853093")</p>
+
           <div className="song-artwork-container">
-            <SongArtworkComponent/>
-            <SongArtworkComponent/>
-            <SongArtworkComponent/>
-            <SongArtworkComponent/>
+            <SongArtworkComponent
+              artwork_url="https://upload.wikimedia.org/wikipedia/en/f/fe/Sound_of_joy.jpg"
+              song_title="Reflections in Blue"
+              artist_name="Sun Ra"
+              genre_name="Free jazz"/>
+            <SongArtworkComponent
+              artwork_url="https://m.media-amazon.com/images/I/81INZs21JoL._SL1500_.jpg"
+              song_title="Death Magick for Adepts"
+              artist_name="Cradle of Filth"
+              genre_name="Black metal"/>
+            <SongArtworkComponent
+              artwork_url="https://upload.wikimedia.org/wikipedia/en/d/da/Georgiaclay.jpg"
+              song_title="A Real Good Try"
+              artist_name="Josh Kelley"
+              genre_name="Country roads"/>
+            <SongArtworkComponent
+              artwork_url="https://upload.wikimedia.org/wikipedia/en/a/a1/Diary_of_a_psamlist.jpg"
+              song_title="Lift Those Hands"
+              artist_name="Marvin Sapp"
+              genre_name="Gospel"/>
           </div>
+
+          <p className="p-transparent">Listeners like you are least likely to enjoy songs in these styles</p>
 
           <div id="test-div-1">
               <p id="test-p-1">Genres:</p>
