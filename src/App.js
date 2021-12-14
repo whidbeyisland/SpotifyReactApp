@@ -5,6 +5,9 @@ import hash from "./hash";
 import Player from "./Player";
 import logo from "./logo.svg";
 import "./App.css";
+import SongArtworkComponent from "./SongArtworkComponent.js";
+import Button from "react-bootstrap/Button";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
   constructor() {
@@ -90,6 +93,48 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <p className="app-title">TubaTube</p>
+          <p className="app-subtitle">Expand your horizons</p>
+          <div className="login-button-div">
+          {!this.state.token && (
+            <Button
+              variant="success"
+              href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
+                "%20"
+              )}&response_type=token&show_dialog=true`}
+            >
+              Login to Spotify
+            </Button>
+          )}
+          </div>
+          <p className="playlist-header">From your new playlist...</p>
+          <p className="p-transparent">(Look in your Spotify playlists for "Worst Songs 853093")</p>
+
+          <div className="song-artwork-container">
+            <SongArtworkComponent
+              artwork_url="https://upload.wikimedia.org/wikipedia/en/f/fe/Sound_of_joy.jpg"
+              song_title="Reflections in Blue"
+              artist_name="Sun Ra"
+              genre_name="Free jazz"/>
+            <SongArtworkComponent
+              artwork_url="https://m.media-amazon.com/images/I/81INZs21JoL._SL1500_.jpg"
+              song_title="Death Magick for Adepts"
+              artist_name="Cradle of Filth"
+              genre_name="Black metal"/>
+            <SongArtworkComponent
+              artwork_url="https://upload.wikimedia.org/wikipedia/en/d/da/Georgiaclay.jpg"
+              song_title="A Real Good Try"
+              artist_name="Josh Kelley"
+              genre_name="Country roads"/>
+            <SongArtworkComponent
+              artwork_url="https://upload.wikimedia.org/wikipedia/en/a/a1/Diary_of_a_psamlist.jpg"
+              song_title="Lift Those Hands"
+              artist_name="Marvin Sapp"
+              genre_name="Gospel"/>
+          </div>
+
+          <p className="p-transparent">Listeners like you are least likely to enjoy songs in these styles</p>
+
           <div id="test-div-1">
               <p id="test-p-1">Genres:</p>
           </div>
@@ -99,7 +144,7 @@ class App extends Component {
           <div id="test-div-3">
               <p id="test-p-3">Songs for each genre:</p>
           </div>
-
+          
           <img src={logo} className="App-logo" alt="logo" />
           {!this.state.token && (
             <a
