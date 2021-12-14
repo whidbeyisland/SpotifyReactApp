@@ -6,6 +6,8 @@ import Player from "./Player";
 import logo from "./logo.svg";
 import "./App.css";
 import SongArtworkComponent from "./SongArtworkComponent.js";
+import Button from "react-bootstrap/Button";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
   constructor() {
@@ -93,7 +95,18 @@ class App extends Component {
         <header className="App-header">
           <p className="app-title">TubaTube</p>
           <p className="app-subtitle">Expand your horizons</p>
-
+          <div className="login-button-div">
+          {!this.state.token && (
+            <Button
+              variant="success"
+              href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
+                "%20"
+              )}&response_type=token&show_dialog=true`}
+            >
+              Login to Spotify
+            </Button>
+          )}
+          </div>
           <p className="playlist-header">From your new playlist...</p>
           <p className="p-transparent">(Look in your Spotify playlists for "Worst Songs 853093")</p>
 
@@ -131,7 +144,7 @@ class App extends Component {
           <div id="test-div-3">
               <p id="test-p-3">Songs for each genre:</p>
           </div>
-
+          
           <img src={logo} className="App-logo" alt="logo" />
           {!this.state.token && (
             <a

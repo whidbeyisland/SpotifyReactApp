@@ -59,6 +59,18 @@
   color: #fcc721;
 }
 
+.login-button-div {
+  margin: 5px;
+  margin-top: 20px;
+}
+
+.login-button-div .btn {
+  font-size: 13px;
+  line-height: 1;
+  margin: 5px;
+  margin-top: 20px;
+}
+
 .song-artwork-container {
   display: flex;
   margin-top: 20px;
