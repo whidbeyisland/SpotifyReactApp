@@ -6,6 +6,7 @@ import Player from "./Player";
 import logo from "./logo.svg";
 import "./App.css";
 import SongArtworkComponent from "./SongArtworkComponent.js";
+import PythonButton from "./PythonButton.js";
 import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -107,6 +108,7 @@ class App extends Component {
             </Button>
           )}
           </div>
+          <PythonButton/>
           <p className="playlist-header">From your new playlist...</p>
           <p className="p-transparent">(Look in your Spotify playlists for "Worst Songs 853093")</p>
 
