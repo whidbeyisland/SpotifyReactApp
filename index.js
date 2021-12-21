@@ -7,7 +7,7 @@ app.get('/', (req, res) => {
     var largeDataSet = [];
     // spawn new child process to call the python script
     const python = spawn('python', [
-        'run_prediction_models.py',
+        'python_pytorch.py',
         '--genres-liked',
         '010001000010'
         // 0 = user likes that genre according to scouring of library
