@@ -122,10 +122,6 @@ function checkIfReady() {
     
 }
 
-function testFunc() {
-    alert('teeeeeeeeest');
-}
-
 function doMLStuff() {
     alert(counter);
     var testdiv1 = document.getElementById('test-div-1');
