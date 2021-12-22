@@ -21,3 +21,14 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+script1.py
+script2.py
+script3.py
+
+/__pycache__
+
+download_pkls.py
+load_prediction_models.py
+run_prediction_models.py
+tweet_manipulations.py
