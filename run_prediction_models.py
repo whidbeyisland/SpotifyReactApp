@@ -104,23 +104,26 @@ class RunPredictionModels:
         print('row')
         # coati: replace this with the user's liked genres as populated from
         # the string passed here, just using this mocked data right now for testing
-        row = pd.DataFrame({'Rock': [float(1)],
-                    'Pop': [float(1)],
-                    'Country': [float(0)],
-                    'Metal': [float(0)],
-                    'Jazz': [float(0)],
-                    'HipHop': [float(0)],
-                    'JPop': [float(0)],
-                    'Chiptune': [float(1)],
-                    'Trance': [float(1)],
-                    'House': [float(1)],
-                    'R&B': [float(0)],
-                    'KPop': [float(1)]})
+        row = df.iloc[578]
+        space = df.iloc[578, 0]
+        print(type(space))
+        # row = pd.DataFrame({'Rock': [float(1)],
+        #             'Pop': [float(1)],
+        #             'Country': [float(0)],
+        #             'Metal': [float(0)],
+        #             'Jazz': [float(0)],
+        #             'HipHop': [float(0)],
+        #             'JPop': [float(0)],
+        #             'Chiptune': [float(1)],
+        #             'Trance': [float(1)],
+        #             'House': [float(1)],
+        #             'R&B': [float(0)],
+        #             'KPop': [float(1)]})
         
         print('preds')
         try:
             # print(type(tab_learn_eachgenre[5])) # TabularLearner
-            preds = tab_learn_eachgenre[5].get_preds(dl=row)
-            print(type(preds))
+            preds = tab_learn_eachgenre[5].predict(row)
+            print(preds)
         except Exception as e:
             print(e)
