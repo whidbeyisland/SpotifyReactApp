@@ -33,10 +33,6 @@ path_models = 'pytorch_assets\\models'
 
 
 
-
-
-
-
-# print(sys.argv[2] + ' was fed to me')
+# sys.argv[2] is the genre string fed from index.js to python_pytorch.py
 r = RunPredictionModels(sys.argv[2])
 r.initialize_assets()
