@@ -38,6 +38,8 @@ pathlib.PosixPath = pathlib.WindowsPath
 
 import sys
 
+
+
 cat_names = ['Pop', 'Rock', 'Country', 'Metal', 'Jazz', 'HipHop', 'JPop', 'Chiptune', 'Trance', 'House', 'R&B', 'KPop']
 procs = [Categorify, FillMissing, Normalize]
 path_cwd = os.getcwd()
@@ -45,17 +47,27 @@ path_df = 'pytorch_assets\\dataframes'
 path_dls = 'pytorch_assets\\dataloaders'
 path_models = 'pytorch_assets\\models'
 
-
-
 class RunPredictionModels:
-    def __init__(self):
-        print('got here 2')
-        # pass
+    liked_genres_str = None
+
+    def __init__(self, _liked_genres_str):
+        if _liked_genres_str == None or len(_liked_genres_str) != len(cat_names):
+            self.liked_genres_str = self.rand_liked_genres_str()
+        else:
+            self.liked_genres_str = _liked_genres_str
+        print(self.liked_genres_str)
+        print('fed to me: ' + _liked_genres_str)
 
     def fileize(self, name):
         lower_name = name.lower()
         name_ltrs = re.sub('[^a-zA-Z]', '_', lower_name)
         return name_ltrs
+    
+    def rand_liked_genres_str(self):
+        new_str = ''
+        for i in range(0, len(cat_names)):
+            new_str.append(str(random.randint(0, 1)))
+        return new_str
 
     def initialize_assets(self):
         # mocked data right now for correlations between liking each genre and liking other genres
@@ -69,61 +81,41 @@ class RunPredictionModels:
             cat_names_thisgenre.remove(cat_names[i])
             cat_names_eachgenre.append(cat_names_thisgenre)
 
-        print('dataloaders')
+        print('Initializing data loaders...')
         dls_eachgenre = []
         try:
             for i in range(0, len(cat_names)):
                 dls_thisgenre = torch.load(os.path.join(path_cwd, path_dls, 'dls-tab-0001-' + self.fileize(cat_names[i]) + '.pkl'))
                 dls_eachgenre.append(dls_thisgenre)
-                # dls_thisgenre = TabularDataLoaders.from_df(df, y_names=cat_names[i],  
-                #                                 cat_names = cat_names_eachgenre[i],
-                #                                 procs = procs,
-                #                                 bs=3,
-                #                                 y_block = CategoryBlock())
-                # dls_eachgenre.append(dls_thisgenre)
-                # torch.save(dls_thisgenre, os.path.join(path_df, ('dls-tab-0001-' + self.fileize(cat_names[i]) + '.pkl')))
         except Exception as e:
             print(e)
         
-        print('learners')
+        print('Initializing models...')
         tab_learn_eachgenre = []
         try:
             for i in range(0, len(cat_names)):
-                print(i)
                 tab_learn_thisgenre = tabular_learner(dls_eachgenre[i], metrics=accuracy)
                 tab_learn_thisgenre.path = Path(str(path_cwd))/'pytorch_assets'
                 tab_learn_thisgenre.load('learn-tab-0001-' + self.fileize(cat_names[i]))
-                # tab_learn_thisgenre.fit_one_cycle(1, lr_max=1e-2)
-                # tab_learn_thisgenre.save('learn-tab-0001-' + self.fileize(cat_names[i]))
-                # tab_learn_thisgenre.export('learn-tab-0001-' + self.fileize(cat_names[i]) + '.pkl')
-                # tab_learn_thisgenre = tab_learn_thisgenre.load('learn-tab-0001-' + self.fileize(cat_names[i]), strict=False)
                 tab_learn_eachgenre.append(tab_learn_thisgenre)
         except Exception as e:
             print(e)
         
-        print('row')
-        # coati: replace this with the user's liked genres as populated from
-        # the string passed here, just using this mocked data right now for testing
-        row = df.iloc[578]
-        space = df.iloc[578, 0]
-        print(type(space))
-        # row = pd.DataFrame({'Rock': [float(1)],
-        #             'Pop': [float(1)],
-        #             'Country': [float(0)],
-        #             'Metal': [float(0)],
-        #             'Jazz': [float(0)],
-        #             'HipHop': [float(0)],
-        #             'JPop': [float(0)],
-        #             'Chiptune': [float(1)],
-        #             'Trance': [float(1)],
-        #             'House': [float(1)],
-        #             'R&B': [float(0)],
-        #             'KPop': [float(1)]})
+        print('Initializing row from user\'s liked genres...')
+        row_dict = dict()
+        for i in range(0, len(cat_names)):
+            print(i)
+            float_thisgenre = float(self.liked_genres_str[i])
+            row_dict[cat_names[i]] = [float_thisgenre]
+        row = pd.DataFrame(row_dict)
+        row = tab_learn_eachgenre[0].dls.test_dl(row)
         
         print('preds')
         try:
             # print(type(tab_learn_eachgenre[5])) # TabularLearner
-            preds = tab_learn_eachgenre[5].predict(row)
+            # preds = tab_learn_eachgenre[5].predict(row)[0]
+            preds = tab_learn_eachgenre[0].get_preds(dl=row)[0]
             print(preds)
+            print(np.argmax(preds))
         except Exception as e:
             print(e)

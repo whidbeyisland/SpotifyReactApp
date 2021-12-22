@@ -38,6 +38,5 @@ path_models = 'pytorch_assets\\models'
 
 
 # print(sys.argv[2] + ' was fed to me')
-print('got here')
-r = RunPredictionModels()
+r = RunPredictionModels(sys.argv[2])
 r.initialize_assets()
