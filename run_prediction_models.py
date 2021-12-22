@@ -48,8 +48,6 @@ class RunPredictionModels:
             self.liked_genres_str = self.rand_liked_genres_str()
         else:
             self.liked_genres_str = _liked_genres_str
-        print(self.liked_genres_str)
-        print('fed to me: ' + _liked_genres_str)
 
     def fileize(self, name):
         lower_name = name.lower()
@@ -65,7 +63,7 @@ class RunPredictionModels:
     def initialize_assets(self):
         # mocked data right now for correlations between liking each genre and liking other genres
         df = pd.read_csv(os.path.join(path_df, 'mock_music_data_5.csv'))
-        print(df.shape)
+        # print(df.shape)
 
         # for each genre: create a list of all the *other* genres to predict whether or not the user will like
         cat_names_eachgenre = []
@@ -74,16 +72,15 @@ class RunPredictionModels:
             cat_names_thisgenre.remove(cat_names[i])
             cat_names_eachgenre.append(cat_names_thisgenre)
 
-        print('Initializing data loaders...')
         dls_eachgenre = []
         try:
             for i in range(0, len(cat_names)):
                 dls_thisgenre = torch.load(os.path.join(path_cwd, path_dls, 'dls-tab-0001-' + self.fileize(cat_names[i]) + '.pkl'))
                 dls_eachgenre.append(dls_thisgenre)
         except Exception as e:
-            print(e)
+            pass
+            # print(e)
         
-        print('Initializing models...')
         tab_learn_eachgenre = []
         try:
             for i in range(0, len(cat_names)):
@@ -92,10 +89,10 @@ class RunPredictionModels:
                 tab_learn_thisgenre.load('learn-tab-0001-' + self.fileize(cat_names[i]))
                 tab_learn_eachgenre.append(tab_learn_thisgenre)
         except Exception as e:
-            print(e)
+            pass
+            # print(e)
         
         # for each genre, get the likelihood of the user liking that genre
-        print('Making predictions from your liked genres...')
         user_appeal_dict = dict()
         for i in range(0, len(cat_names)):
             row_dict = dict()
@@ -115,13 +112,13 @@ class RunPredictionModels:
                 # adding to user_appeal_dict the chance that the user likes the genre at index i
                 user_appeal_dict[cat_names[i]] = preds[0][1]
             except Exception as e:
-                print(e)
+                pass
+                # print(e)
         
         # print all likelihoods in *ascending* order --- least liked genres at top
-        print('Genres you are least likely to like...')
         user_appeal_list = []
         for i in range(0, len(cat_names)):
             user_appeal_list.append([cat_names[i], user_appeal_dict[cat_names[i]]])
         user_appeal_list.sort(key=lambda x: x[1])
         for i in range(0, len(user_appeal_list)):
-            print(user_appeal_list[i][0] + ' (likelihood: ' + str(int(100 * user_appeal_list[i][1])) + '%)')
+            print(user_appeal_list[i][0] + ' (likelihood: ' + str(int(100 * user_appeal_list[i][1])) + '%)\n')

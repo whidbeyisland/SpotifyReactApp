@@ -6,6 +6,10 @@ const port = 3000
 app.get('/', (req, res) => {
     var largeDataSet = [];
     // spawn new child process to call the python script
+    // const python = spawn('python', [
+    //     'script1.py'
+    //     // 0 = user likes that genre according to scouring of library
+    // ]);
     const python = spawn('python', [
         'python_pytorch.py',
         '--genres-liked',
