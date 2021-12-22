@@ -101,21 +101,27 @@ class RunPredictionModels:
         except Exception as e:
             print(e)
         
-        print('Initializing row from user\'s liked genres...')
-        row_dict = dict()
+        # for each genre, get the likelihood of the user liking that genre
+        user_appeal_dict = dict()
         for i in range(0, len(cat_names)):
-            print(i)
-            float_thisgenre = float(self.liked_genres_str[i])
-            row_dict[cat_names[i]] = [float_thisgenre]
-        row = pd.DataFrame(row_dict)
-        row = tab_learn_eachgenre[0].dls.test_dl(row)
-        
-        print('preds')
-        try:
-            # print(type(tab_learn_eachgenre[5])) # TabularLearner
-            # preds = tab_learn_eachgenre[5].predict(row)[0]
-            preds = tab_learn_eachgenre[0].get_preds(dl=row)[0]
-            print(preds)
-            print(np.argmax(preds))
-        except Exception as e:
-            print(e)
+            print('Initializing row from user\'s liked genres...')
+            row_dict = dict()
+            for j in range(0, len(cat_names)):
+                float_thisgenre = float(self.liked_genres_str[j])
+                row_dict[cat_names[j]] = [float_thisgenre]
+            row = pd.DataFrame(row_dict)
+            row = tab_learn_eachgenre[i].dls.test_dl(row)
+            
+            print('Making predictions...')
+            try:
+                # print(type(tab_learn_eachgenre[5])) # TabularLearner
+                # preds = tab_learn_eachgenre[5].predict(row)[0]
+                preds = tab_learn_eachgenre[i].get_preds(dl=row)[0]
+                print(preds)
+                print(np.argmax(preds))
+
+                # adding to user_appeal_dict the chance that the user likes the genre at index i
+                user_appeal_dict[cat_names[i]] = preds[0][1]
+            except Exception as e:
+                print(e)
+        # print(user_appeal_dict['Rock'])
