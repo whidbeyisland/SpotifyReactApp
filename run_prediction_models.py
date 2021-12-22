@@ -25,13 +25,6 @@ from fastai.tabular.all import *
 from fastai.tabular import *
 from fastai.collab import *
 
-nltk.download('wordnet')
-nltk.download('averaged_perceptron_tagger')
-from nltk.corpus import wordnet
-from nltk import FreqDist
-from string import punctuation
-import mmap
-
 import pathlib
 posixpath_temp = pathlib.PosixPath
 pathlib.PosixPath = pathlib.WindowsPath
@@ -102,9 +95,9 @@ class RunPredictionModels:
             print(e)
         
         # for each genre, get the likelihood of the user liking that genre
+        print('Making predictions from your liked genres...')
         user_appeal_dict = dict()
         for i in range(0, len(cat_names)):
-            print('Initializing row from user\'s liked genres...')
             row_dict = dict()
             for j in range(0, len(cat_names)):
                 float_thisgenre = float(self.liked_genres_str[j])
@@ -112,16 +105,23 @@ class RunPredictionModels:
             row = pd.DataFrame(row_dict)
             row = tab_learn_eachgenre[i].dls.test_dl(row)
             
-            print('Making predictions...')
             try:
                 # print(type(tab_learn_eachgenre[5])) # TabularLearner
                 # preds = tab_learn_eachgenre[5].predict(row)[0]
                 preds = tab_learn_eachgenre[i].get_preds(dl=row)[0]
-                print(preds)
-                print(np.argmax(preds))
+                # print(preds)
+                # print(np.argmax(preds))
 
                 # adding to user_appeal_dict the chance that the user likes the genre at index i
                 user_appeal_dict[cat_names[i]] = preds[0][1]
             except Exception as e:
                 print(e)
-        # print(user_appeal_dict['Rock'])
+        
+        # print all likelihoods in *ascending* order --- least liked genres at top
+        print('Genres you are least likely to like...')
+        user_appeal_list = []
+        for i in range(0, len(cat_names)):
+            user_appeal_list.append([cat_names[i], user_appeal_dict[cat_names[i]]])
+        user_appeal_list.sort(key=lambda x: x[1])
+        for i in range(0, len(user_appeal_list)):
+            print(user_appeal_list[i][0] + ' (likelihood: ' + str(int(100 * user_appeal_list[i][1])) + '%)')
