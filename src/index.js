@@ -41,6 +41,7 @@ var playlist_id = '';
 
 const urlParams = new URLSearchParams(document.location.search);
 const user_id = urlParams.get('userid');
+const fs = require('fs');
 
 //intervalId = window.setInterval(checkIfReady, 1000);
 
@@ -60,7 +61,17 @@ for (var i = 0; i < top10Genres.length; i++) {
 $(document).ready(requestSongs(50, thisCycle));
 
 function requestSongs(_max, _thisCycle) {
+    //coati: just testing reading from and writing to file
     alert(text);
+
+    let data = 'Learning how to write in a file.';
+    fs.writeFile('./text.txt', data, (err) => {
+        // In case of a error throw err.
+        if (err) throw err;
+    });
+
+
+
 
     //window.setInterval(checkIfReady, 1000);
     $.ajax({

@@ -1,7 +1,17 @@
-const express = require('express')
+const express = require('express');
 const {spawn} = require('child_process');
-const app = express()
-const port = 3000
+const axios = require('axios');
+const app = express();
+const port = 3000;
+
+axios.get('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY')
+  .then(response => {
+    console.log(response.data.url);
+    console.log(response.data.explanation);
+  })
+  .catch(error => {
+    console.log(error);
+});
 
 app.get('/', (req, res) => {
     var largeDataSet = [];
@@ -26,4 +36,4 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => console.log(`Example app listening on port
-${port}!`))
+${port}!`));
