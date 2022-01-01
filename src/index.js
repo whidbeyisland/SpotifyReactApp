@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import $ from 'jquery';
 
+import text from './text.js';
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
@@ -27,8 +29,8 @@ var counter = 0;
 var max = 50;
 var maxCycles = 5;
 var thisCycle = 0;
-var reqheader = 'BQDfkWJ1Li7q1VC_Z9oSbpHe2DcKp4SBbOsoEZk7Te7lyL31qHeXwYmkDDUYBxIAqNDuRep8-fWAvQoiBPbgazRWMLBBU7RkTGoIYzXfpneGuCxLwoJ0sau6DUj_jtlWWUL1X_0TQVbW3b4h8NQckDZv6IetEI0iWJnMtPocusMJp42bmHkk_7YHWBvzfl275CKd2ddfS1VIt-8erkkdy56g93VWQ87iA9OjYQ70djUXs33_8Dwt73gx';
-var reqheader2 = 'BQDTGbam_tPDl1aRSpb3V2qSxDV5X4sxUigsFn2Rb3rzewE5X5j0lcXoiwmjQu1TWga5C3DNxO6OUik2l1kyUH-PfApoLbzupfjkY8Wjk81cFh3KPCRoXZAuerPeq-hLxK-LTIIYDxK135GunPoCeqNVN12FGqbcgJ-RDJRDfRWliRY5oZEfwfrPDVsjGzHRbVN8ZiwShlqSaFgpxIMA-pPttNUK839eCm7blOXhXGka2-jS-QIWRVYe';
+var reqheader = 'BQAbJKfv-BuiGr0a62OpLIp5qgQd7pErKq46b3UF36NtiWWFqwHmHtKOO3aD6WsoesEM9xi2AqHgSegWRM1JZcXCYDfA4DhU88Nz6YnbWPalyfS2PbxPXMfGct5_BNh3Y2wpz5CB5i5WlVvpNnjlqzAnkMs6NHdxGCxmCKcusOKq-yj8N1FQyEWJPS2uFTrjwMRIFj4Voh76NLU3-ME5WJwD46j00hiawPuvKcc7Kjd9XRPMYM-w1zRZ';
+var reqheader2 = 'BQBNBnXBMouEh8zGTytLnuf1aYqSvPZLUnHNFfSDli3UtcselX53bwNPLnkPaC-l82aMF83n0bx7cYwEO5U2QVK210lu68yWRRpExdOi95bjAHJvq6z-myrlUEc8bSRhANHVD663d1i5p5Myuy73lhSnYjxhW004XnEnozhe7xpPuTpb6KwQCP5pBguqhEDKtp5eKuVj4GL7CVfJYOmDDyMbE1FVJ-2AFGL7FOibcTxsA4TshAJipBRQ';
 var special_value;
 var intervalId;
 var requestSongs_done = false;
@@ -55,9 +57,11 @@ for (var i = 0; i < top10Genres.length; i++) {
 //test_playlist_id = '1gtte2hJH9eSuVtwYerurB';
 //$(document).ready(addSongsToPlaylist(test_playlist_id, 'punk'));
 //$(document).ready(createPlaylist(top10genres));
-//$(document).ready(requestSongs(50, thisCycle));
+$(document).ready(requestSongs(50, thisCycle));
 
 function requestSongs(_max, _thisCycle) {
+    alert(text);
+
     //window.setInterval(checkIfReady, 1000);
     $.ajax({
         url: 'https://api.spotify.com/v1/me/tracks?limit=' + _max + '&offset=' + _max * _thisCycle,
