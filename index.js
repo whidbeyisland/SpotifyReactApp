@@ -33,8 +33,8 @@ var counter = 0;
 var max = 50;
 var maxCycles = 5;
 var thisCycle = 0;
-var reqheader = 'BQB_7E3QWeFDMD-yHBVFc-thetKn-Fic_dkI2ZcpW4D1CHjUULDuGUw8M6S44ncbKQ_27HRvJ8oJyACXsGou3i_DUNtDXc8jf3rohXKhR49Kabl9-cbbWOWXsXF6Q-eFmbFlQ2tIYxSVbQO-FxcqYm9Bw4Yyg6cuWS9L9AyQEkhHzjpWLqFYzYA9PUaWn2EIAbkLXzWdiN1Hn47uzfzljWx974rqiiloOkMTDE-PV_qvt9Ecnljs3ow0';
-var reqheader2 = 'BQCduhrtssqnnek6s0l1dTpZwajGA3Jwz3hwK7jNV3yK_XTJVJn1YAUSWllBlle_xI43gKOXz_mmFckpIGJnG1EYjrP0n4qhO75ItMOG6LC1l8xR2UEhGI_FkBhFshHhSFuZIySip-FmBZdALo2P72uvMXKMgp1zq_D_ZjkzXkGGHDgfh_83EbDIHzIMFoQ4D77KCmuH1_yicNnH0bQj3y0B9UOa2x8x_grITS2CeeBh8R0BdLLrXOeo';
+var reqheader = 'BQBVQui1E9uVDa5dMLBMh9IhsA84TJ9hjZ7gO4Uzu9EKYc2gKwrHLOI_8a6AHto5FztCFLAlEwGUuIuHVvNOgBPMq4axnf_rJ2JyPp9TUnB4gS-RUU1fV3h8jlo9OmzSG3dHP-a3XHKHhZTpIDao9Q_TkrM9N3UTJ0iwwmK76DhbEqNU3UN19YuTuqvyYBidRYkInudYlWhx6LYD_BdGPMYJZ3GLEwpwOHaZ3vBrBwMcBAmeOYAM_icr';
+var reqheader2 = 'BQDrS6GOsJHMeqJgJ3KAwMBBMixGDDHb3ey_XBTjudqqP_z-p_oRmgG1TuuaHhXbWRTmfm0MMnS_bXFegymCaB2XflkjZkB5_A3hHsAXH4MfTjoqQU1kHRl1D_tG_Z9fzcViHsm90UWiXtK13Urex_SYF4XCR_jH-W5O6d1eWNW6qXHA5v18sz3Oq9EoJ6r4xvHJszyTKp0U_VRq4kzArj2hk6WE_aWsu7EGE2F4e1QfE8rJzC5M2mKP';
 var special_value;
 var intervalId;
 var requestSongs_done = false;
@@ -47,7 +47,7 @@ const urlParams = new URLSearchParams(document.location.search);
 const user_id = urlParams.get('userid');
 const fs = require('fs');
 
-//intervalId = window.setInterval(checkIfReady, 1000);
+intervalId = window.setInterval(checkIfReady, 1000);
 
 /*
 top10Genres = ['pop', 'punk', 'indie soul', 'indie poptimism', 'nu metal'];
@@ -63,7 +63,7 @@ for (var i = 0; i < top10Genres.length; i++) {
 requestSongs(50, 0);
 
 function requestSongs(_max, _thisCycle) {
-    //window.setInterval(checkIfReady, 1000);
+    window.setInterval(checkIfReady, 1000);
     url_reqsongs = 'https://api.spotify.com/v1/me/tracks?limit=' + _max + '&offset=' + _max * _thisCycle
     axios.get(url_reqsongs, {
         headers: {
