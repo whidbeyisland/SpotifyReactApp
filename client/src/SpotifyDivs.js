@@ -7,7 +7,7 @@ import $ from 'jquery';
 var counter = 0;
 var max = 50;
 var maxCycles = 5;
-var thisCycle = 0;
+// var thisCycle = 0;
 var special_value;
 // var intervalId;
 // var requestSongs_done = false;
@@ -65,13 +65,17 @@ function mainFunc() {
 function requestSongsNCycles() {
     // coati: get this to execute multiple times, even if you have to go back to old method of using
     // timer instead of Promises
-    var i = 0;
-    maxCycles = 1;
-    while (i < maxCycles) {
-        requestSongs(i)
-        i++;
+    // var i = 0;
+    // maxCycles = 1;
+    var thisCycle = 0;
+    var promise = Promise.resolve();
+    while (thisCycle < maxCycles) {
+        console.log('cycle: ' + thisCycle);
+        promise = promise.then(requestSongs(thisCycle));
+        thisCycle++;
     }
-    return Promise.resolve('hello');
+
+    return promise;
 }
 
 function requestSongs(_thisCycle) {
@@ -118,7 +122,7 @@ function requestSongs(_thisCycle) {
             }
             console.log(top100artists_genres.length);
         }
-    }); 
+    });
 }
 
 /*
@@ -151,7 +155,7 @@ function checkIfReady() {
 
 function doMLStuff() {
     console.log('got here 3');
-    // alert(counter);
+    alert(counter);
     var testdiv1 = document.getElementById('test-div-1');
     var testp2 = document.getElementById('test-p-2');
 
@@ -245,7 +249,7 @@ function createPlaylist() {
                 dataType: 'json',
                 success: function(resultA) {
                     console.log('got here 4a');
-                    generatePlaylist_done = true;
+                    // generatePlaylist_done = true;
                 },
                 error: function(err) {
                     alert(user_id + '..........');
@@ -262,13 +266,13 @@ function createPlaylist() {
         alert(JSON.stringify(err));
     });
     
-    return Promise.resolve('hello');
+    return Promise.resolve();
 }
 
 function addSongsToPlaylistAllGenres() {
     console.log('got here 4.5');
     
-    return Promise.resolve('hello');
+    return Promise.resolve();
 }
 
 function addSongsToPlaylistOneGenre(_genre) {
@@ -289,7 +293,7 @@ function addSongsToPlaylistOneGenre(_genre) {
         dataType: 'json',
         success: function(resultA) {
             console.log(JSON.stringify(resultA));
-            generatePlaylist_done = true;
+            // generatePlaylist_done = true;
         },
         error: function(err) {
             alert(JSON.stringify(err));
