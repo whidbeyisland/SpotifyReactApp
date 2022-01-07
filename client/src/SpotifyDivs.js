@@ -13,9 +13,10 @@ var intervalId;
 var requestSongs_done = false;
 var generatePlaylist_done = false;
 var top10Genres;
+var top10Genres_opp;
 var curGenreIndex = 0;
 var playlist_id = '';
-var csv_path = './playlist-by-genre.csv';
+var csv_path = 'client/src/playlist-by-genre.csv';
 
 const urlParams = new URLSearchParams(document.location.search);
 
@@ -28,8 +29,8 @@ export default class SpotifyDivs extends Component {
 
     componentDidMount() {
         //COATI: turn this on and off to get all the functionality running
-        //intervalId = window.setInterval(checkIfReady, 1000);
-        var a = getSongsOneGenre('pop');
+        intervalId = window.setInterval(checkIfReady, 1000);
+        //var a = getSongsOneGenre('pop');
     }
     
     render() {
@@ -53,7 +54,8 @@ export default class SpotifyDivs extends Component {
 // Spotify functionality
 
 function requestSongs(_max, _thisCycle) {
-    //window.setInterval(checkIfReady, 1000);
+    console.log('got here 1');
+    window.setInterval(checkIfReady, 1000);
     $.ajax({
         url: 'https://api.spotify.com/v1/me/tracks?limit=' + _max + '&offset=' + _max * _thisCycle,
         type: 'GET',
@@ -91,10 +93,11 @@ function requestSongs(_max, _thisCycle) {
             }
         }
     });
+        
 };
 
 function checkIfReady() {
-    console.log('got here');
+    console.log('got here 2');
     var testdiv1 = document.getElementById('test-div-1');
     var testp2 = document.getElementById('test-p-2');
 
@@ -104,22 +107,24 @@ function checkIfReady() {
             if (thisCycle < maxCycles) {
                 requestSongs(max, thisCycle);
             } else {
+                requestSongs_done = true;
                 doMLStuff();
             }
         }
-    } /*else if (generatePlaylist_done == true) {
+    } else if (generatePlaylist_done == true) {
+        console.log('got here 2a');
         if (curGenreIndex < top10Genres.length) {
             clearInterval(intervalId);
             curGenreIndex++;
             addSongsToPlaylist(playlist_id, top10Genres[curGenreIndex - 1]);
         }
     }
-    */
     
 }
 
 function doMLStuff() {
-    alert(counter);
+    console.log('got here 3');
+    // alert(counter);
     var testdiv1 = document.getElementById('test-div-1');
     var testp2 = document.getElementById('test-p-2');
 
@@ -156,6 +161,9 @@ function doMLStuff() {
     for (var i = 0; i < genreCountsKeys.length; i++) {
         dictString += genreCountsKeys[i] + ': ' + genreCounts[genreCountsKeys[i]] + '\n';
     }
+    console.log(dictString);
+    console.log('got here 3a');
+    console.log(genreCountsKeys.length);
 
     /*
     generate playlist based on top 10 genres: take the 10 lowest predicted genres based on the top 10 that
@@ -164,28 +172,34 @@ function doMLStuff() {
     //allowedGenres: just set as a placeholder for now
     var allowedGenres = ['pop', 'rock', 'country', 'dance pop', 'indie rock', 'alternative rock', 'permanent wave',
     'alternative metal', 'new rave', 'punk', 'indie soul', 'indie poptimism', 'nu metal', 'emo', 'indietronica',
-    'indie soul', 'urban contemporary', 'pop rap', 'classic rock', 'trance', 'soft rock'];
+    'indie soul', 'urban contemporary', 'pop rap', 'classic rock', 'trance', 'soft rock', 'experimental hip hop',
+    'post-grunge', 'boy band'];
     var _top10Genres = [];
     var i = 0;
     var genresMatched = 0;
-    while (genresMatched < 10) {
-        try {
+    for (var i = 0; i < genreCountsKeys.length; i++) {
+        if (genresMatched < 10) {
             if (allowedGenres.includes(genreCountsKeys[i])) {
-                top10Genres.push(genreCountsKeys[i]);
-                genresMatched++;
+                try {
+                    console.log(genreCountsKeys[i]);
+                    _top10Genres.push(genreCountsKeys[i]);
+                    genresMatched++;
+                }
+                catch {
+
+                }   
             }
-            i++;
-        } catch { }
+        }
     }
-    alert(_top10Genres);
+    console.log(_top10Genres);
     top10Genres = _top10Genres;
-    //createPlaylist(_top10Genres);
+    createPlaylist(_top10Genres);
     
     testp2.innerText = dictString;
 }
 
 function createPlaylist(_top10Genres) {
-    //TODO: get ID of playlist once it's created so you can POST songs to it
+    console.log('got here 4');
 
     function getAjax() {
         return $.ajax({
@@ -203,8 +217,7 @@ function createPlaylist(_top10Genres) {
                 }),
                 dataType: 'json',
                 success: function(resultA) {
-                    //alert(JSON.stringify(resultA));
-                    //console.log(JSON.stringify(resultA));
+                    console.log('got here 4a');
                     generatePlaylist_done = true;
                 },
                 error: function(err) {
@@ -215,6 +228,8 @@ function createPlaylist(_top10Genres) {
     }
     getAjax().done(function(response) {
         playlist_id = response.id;
+        console.log('got here 4b');
+        console.log(playlist_id);
         $('#test-p-2').after('<p>' + response.id + '</p>');
     });
     getAjax().fail(function(error) {
@@ -224,6 +239,7 @@ function createPlaylist(_top10Genres) {
 };
 
 function addSongsToPlaylist(_playlist_id, _genre) {
+    console.log('got here 5');
     var songsThisGenre = getSongsOneGenre(_genre);
     $.ajax({
         url: 'https://api.spotify.com/v1/playlists/' + _playlist_id + '/tracks',
@@ -239,34 +255,18 @@ function addSongsToPlaylist(_playlist_id, _genre) {
         }),
         dataType: 'json',
         success: function(resultA) {
-            alert(JSON.stringify(resultA));
             console.log(JSON.stringify(resultA));
             generatePlaylist_done = true;
         },
         error: function(err) {
-            alert(user_id + '..........');
             alert(JSON.stringify(err));
         }
     });
 }
 
 function getSongsOneGenre(_genre) {
+    console.log('got here 6');
     //TODO: return songs from playlist of each genre instead
-    console.log('got here 20');
-    var request = new XMLHttpRequest();  
-    request.open("GET", csv_path, false);   
-    request.send(null);  
-
-    var csvData = new Array();
-    var jsonObject = request.responseText.split(',');
-    // var jsonObject = request.responseText.split(/\r?\n|\r/);
-    for (var i = 0; i < jsonObject.length; i++) {
-        csvData.push(jsonObject[i].split(','));
-    }
-    // Retrived data from csv file content
-    console.log(csvData);
-    console.log('got here 21');
-
 
     switch (_genre) {
         case 'pop':
@@ -285,6 +285,8 @@ function getSongsOneGenre(_genre) {
 }
 
 function getLeastLikedGenres(_top10Genres) {
+    console.log('got here 7');
+
     //TODO: actually retrieve most anticorrelated genres from ML, this is just a placeholder
     //TODO: store the playlist for each genre in a CSV and access that so you don't have to alter the code
     var leastLikedGenres = [];
