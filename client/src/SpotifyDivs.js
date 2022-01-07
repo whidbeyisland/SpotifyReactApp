@@ -29,8 +29,10 @@ export default class SpotifyDivs extends Component {
 
     componentDidMount() {
         //COATI: turn this on and off to get all the functionality running
-        intervalId = window.setInterval(checkIfReady, 1000);
+        //intervalId = window.setInterval(checkIfReady, 1000);
         //var a = getSongsOneGenre('pop');
+
+        mainFunc();
     }
     
     render() {
@@ -51,13 +53,30 @@ export default class SpotifyDivs extends Component {
 
 }
 
-// Spotify functionality
+// SPOTIFY FUNCTIONALITY
 
-function requestSongs(_max, _thisCycle) {
+function mainFunc() {
+    requestSongsNCycles() // first get all of the person's songs, and the genres of each
+    .then(() => doMLStuff()) // taking all those genres into account, find the genres they are least likely to like
+    .then(() => createPlaylist()) // create a blank playlist
+    .then(() => addSongsToPlaylistAllGenres()); // for all of the person's least liked genres, add songs to the playlist
+}
+
+function requestSongsNCycles() {
+    var i = 0;
+    maxCycles = 1;
+    while (i < maxCycles) {
+        requestSongs(i)
+        i++;
+    }
+    return Promise.resolve('Hello');
+}
+
+function requestSongs(_thisCycle) {
     console.log('got here 1');
-    window.setInterval(checkIfReady, 1000);
+    // window.setInterval(checkIfReady, 1000);
     $.ajax({
-        url: 'https://api.spotify.com/v1/me/tracks?limit=' + _max + '&offset=' + _max * _thisCycle,
+        url: 'https://api.spotify.com/v1/me/tracks?limit=' + max + '&offset=' + max * _thisCycle,
         type: 'GET',
         headers: {
             'Authorization': 'Bearer ' + reqheader
@@ -66,11 +85,13 @@ function requestSongs(_max, _thisCycle) {
             special_value = resultA;
             var top100artists = [];
 
-            for (var i = 0; i < _max; i++) {
+            for (var i = 0; i < max; i++) {
                 try {
                     top100artists.push(resultA.items[i].track.artists[0].id);
                 } catch {}
             }
+
+            var top100artists_genres = new Array();
 
             for (var i = 0; i < top100artists.length; i++) {
                 function getAjax() {
@@ -85,17 +106,22 @@ function requestSongs(_max, _thisCycle) {
                 }
                 getAjax().done(function(response) {
                     counter++;
+                    top100artists_genres += response.genres;
                     $('#test-p-1').after('<p>' + response.genres + '</p>');
                 });
                 getAjax().fail(function(error) {
+                    top100artists_genres += 'null';
                     $('#test-p-1').after('<p>null</p>');
                 });
             }
+            console.log(top100artists_genres.length);
         }
-    });
-        
-};
+    }); 
+}
 
+
+
+/*
 function checkIfReady() {
     console.log('got here 2');
     var testdiv1 = document.getElementById('test-div-1');
@@ -121,6 +147,7 @@ function checkIfReady() {
     }
     
 }
+*/
 
 function doMLStuff() {
     console.log('got here 3');
@@ -198,7 +225,7 @@ function doMLStuff() {
     testp2.innerText = dictString;
 }
 
-function createPlaylist(_top10Genres) {
+function createPlaylist() {
     console.log('got here 4');
 
     function getAjax() {
@@ -230,19 +257,23 @@ function createPlaylist(_top10Genres) {
         playlist_id = response.id;
         console.log('got here 4b');
         console.log(playlist_id);
-        $('#test-p-2').after('<p>' + response.id + '</p>');
     });
-    getAjax().fail(function(error) {
-        $('#test-p-2').after('<p>null</p>');
+    getAjax().fail(function(err) {
+        alert(JSON.stringify(err));
     });
     
-};
+}
 
-function addSongsToPlaylist(_playlist_id, _genre) {
+function addSongsToPlaylistAllGenres() {
+    console.log('got here 4.5');
+    return 'hello';
+}
+
+function addSongsToPlaylistOneGenre(_genre) {
     console.log('got here 5');
     var songsThisGenre = getSongsOneGenre(_genre);
     $.ajax({
-        url: 'https://api.spotify.com/v1/playlists/' + _playlist_id + '/tracks',
+        url: 'https://api.spotify.com/v1/playlists/' + playlist_id + '/tracks',
         type: 'POST',
         headers: {
             'Content-Type': 'application/json',
