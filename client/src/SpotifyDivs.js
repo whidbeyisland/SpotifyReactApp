@@ -15,6 +15,7 @@ var generatePlaylist_done = false;
 var top10Genres;
 var curGenreIndex = 0;
 var playlist_id = '';
+var csv_path = './playlist-by-genre.csv';
 
 const urlParams = new URLSearchParams(document.location.search);
 
@@ -28,6 +29,7 @@ export default class SpotifyDivs extends Component {
     componentDidMount() {
         //COATI: turn this on and off to get all the functionality running
         //intervalId = window.setInterval(checkIfReady, 1000);
+        var a = getSongsOneGenre('pop');
     }
     
     render() {
@@ -162,7 +164,7 @@ function doMLStuff() {
     //allowedGenres: just set as a placeholder for now
     var allowedGenres = ['pop', 'rock', 'country', 'dance pop', 'indie rock', 'alternative rock', 'permanent wave',
     'alternative metal', 'new rave', 'punk', 'indie soul', 'indie poptimism', 'nu metal', 'emo', 'indietronica',
-    'indie soul', 'urban contemporary', 'pop rap', 'classic rock', 'trance', 'soft rock', 'indie soul'];
+    'indie soul', 'urban contemporary', 'pop rap', 'classic rock', 'trance', 'soft rock'];
     var _top10Genres = [];
     var i = 0;
     var genresMatched = 0;
@@ -250,6 +252,22 @@ function addSongsToPlaylist(_playlist_id, _genre) {
 
 function getSongsOneGenre(_genre) {
     //TODO: return songs from playlist of each genre instead
+    console.log('got here 20');
+    var request = new XMLHttpRequest();  
+    request.open("GET", csv_path, false);   
+    request.send(null);  
+
+    var csvData = new Array();
+    var jsonObject = request.responseText.split(',');
+    // var jsonObject = request.responseText.split(/\r?\n|\r/);
+    for (var i = 0; i < jsonObject.length; i++) {
+        csvData.push(jsonObject[i].split(','));
+    }
+    // Retrived data from csv file content
+    console.log(csvData);
+    console.log('got here 21');
+
+
     switch (_genre) {
         case 'pop':
             return ['spotify:track:7xbWAw3LMgRMn4omR5yVn3'];
