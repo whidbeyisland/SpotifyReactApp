@@ -9,9 +9,9 @@ var max = 50;
 var maxCycles = 5;
 var thisCycle = 0;
 var special_value;
-var intervalId;
-var requestSongs_done = false;
-var generatePlaylist_done = false;
+// var intervalId;
+// var requestSongs_done = false;
+// var generatePlaylist_done = false;
 var top10Genres;
 var top10Genres_opp;
 var curGenreIndex = 0;
@@ -63,13 +63,15 @@ function mainFunc() {
 }
 
 function requestSongsNCycles() {
+    // coati: get this to execute multiple times, even if you have to go back to old method of using
+    // timer instead of Promises
     var i = 0;
     maxCycles = 1;
     while (i < maxCycles) {
         requestSongs(i)
         i++;
     }
-    return Promise.resolve('Hello');
+    return Promise.resolve('hello');
 }
 
 function requestSongs(_thisCycle) {
@@ -118,8 +120,6 @@ function requestSongs(_thisCycle) {
         }
     }); 
 }
-
-
 
 /*
 function checkIfReady() {
@@ -201,7 +201,7 @@ function doMLStuff() {
     'alternative metal', 'new rave', 'punk', 'indie soul', 'indie poptimism', 'nu metal', 'emo', 'indietronica',
     'indie soul', 'urban contemporary', 'pop rap', 'classic rock', 'trance', 'soft rock', 'experimental hip hop',
     'post-grunge', 'boy band'];
-    var _top10Genres = [];
+    // var top10Genres = [];
     var i = 0;
     var genresMatched = 0;
     for (var i = 0; i < genreCountsKeys.length; i++) {
@@ -209,7 +209,7 @@ function doMLStuff() {
             if (allowedGenres.includes(genreCountsKeys[i])) {
                 try {
                     console.log(genreCountsKeys[i]);
-                    _top10Genres.push(genreCountsKeys[i]);
+                    top10Genres.push(genreCountsKeys[i]);
                     genresMatched++;
                 }
                 catch {
@@ -218,9 +218,9 @@ function doMLStuff() {
             }
         }
     }
-    console.log(_top10Genres);
-    top10Genres = _top10Genres;
-    createPlaylist(_top10Genres);
+    console.log(top10Genres);
+    top10Genres_opp = getLeastLikedGenres(top10Genres);
+    createPlaylist(top10Genres_opp);
     
     testp2.innerText = dictString;
 }
@@ -262,11 +262,13 @@ function createPlaylist() {
         alert(JSON.stringify(err));
     });
     
+    return Promise.resolve('hello');
 }
 
 function addSongsToPlaylistAllGenres() {
     console.log('got here 4.5');
-    return 'hello';
+    
+    return Promise.resolve('hello');
 }
 
 function addSongsToPlaylistOneGenre(_genre) {
