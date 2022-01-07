@@ -3,11 +3,12 @@ import "./App.css";
 import { user_id, reqheader, reqheader2 } from './config';
 import reportWebVitals from './reportWebVitals';
 import $ from 'jquery';
+// import { resolve } from 'path/posix';
 
 var counter = 0;
 var max = 50;
 var maxCycles = 5;
-// var thisCycle = 0;
+var thisCycle = 0;
 var special_value;
 // var intervalId;
 // var requestSongs_done = false;
@@ -28,10 +29,6 @@ export default class SpotifyDivs extends Component {
     }
 
     componentDidMount() {
-        //COATI: turn this on and off to get all the functionality running
-        //intervalId = window.setInterval(checkIfReady, 1000);
-        //var a = getSongsOneGenre('pop');
-
         mainFunc();
     }
     
@@ -55,73 +52,74 @@ export default class SpotifyDivs extends Component {
 
 // SPOTIFY FUNCTIONALITY
 
-function mainFunc() {
+function mainFunc() {    
     requestSongsNCycles() // first get all of the person's songs, and the genres of each
     .then(() => doMLStuff()) // taking all those genres into account, find the genres they are least likely to like
     .then(() => createPlaylist()) // create a blank playlist
     .then(() => addSongsToPlaylistAllGenres()); // for all of the person's least liked genres, add songs to the playlist
 }
 
-function requestSongsNCycles() {
-    // coati: get this to execute multiple times, even if you have to go back to old method of using
-    // timer instead of Promises
-    // var i = 0;
-    // maxCycles = 1;
-    var thisCycle = 0;
+function repeat(func, times) {
     var promise = Promise.resolve();
-    while (thisCycle < maxCycles) {
-        console.log('cycle: ' + thisCycle);
-        promise = promise.then(requestSongs(thisCycle));
+    while (times-- > 0) {
+        promise = promise.then(func);
         thisCycle++;
     }
-
     return promise;
 }
 
-function requestSongs(_thisCycle) {
-    console.log('got here 1');
-    // window.setInterval(checkIfReady, 1000);
-    $.ajax({
-        url: 'https://api.spotify.com/v1/me/tracks?limit=' + max + '&offset=' + max * _thisCycle,
-        type: 'GET',
-        headers: {
-            'Authorization': 'Bearer ' + reqheader
-        },
-        success: function(resultA) {
-            special_value = resultA;
-            var top100artists = [];
+function requestSongsNCycles() {
+    return repeat(requestSongs, maxCycles);
+}
 
-            for (var i = 0; i < max; i++) {
-                try {
-                    top100artists.push(resultA.items[i].track.artists[0].id);
-                } catch {}
-            }
-
-            var top100artists_genres = new Array();
-
-            for (var i = 0; i < top100artists.length; i++) {
-                function getAjax() {
-                    return $.ajax({
-                            url: 'https://api.spotify.com/v1/artists/' + top100artists[i],
-                            type: 'GET',
-                            headers: {
-                                'Authorization': 'Bearer ' + reqheader
-                            },
-                            success: function(resultB) { }
-                    })
+function requestSongs() {
+    return new Promise(function (resolve, reject) {
+        console.log('got here 1');
+        console.log(thisCycle);
+        $.ajax({
+            url: 'https://api.spotify.com/v1/me/tracks?limit=' + max + '&offset=' + max * thisCycle,
+            type: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + reqheader
+            },
+            success: function(resultA) {
+                special_value = resultA;
+                var top100artists = [];
+    
+                for (var i = 0; i < max; i++) {
+                    try {
+                        top100artists.push(resultA.items[i].track.artists[0].id);
+                    } catch {}
                 }
-                getAjax().done(function(response) {
-                    counter++;
-                    top100artists_genres += response.genres;
-                    $('#test-p-1').after('<p>' + response.genres + '</p>');
-                });
-                getAjax().fail(function(error) {
-                    top100artists_genres += 'null';
-                    $('#test-p-1').after('<p>null</p>');
-                });
+    
+                var top100artists_genres = new Array();
+    
+                for (var i = 0; i < top100artists.length; i++) {
+                    function getAjax() {
+                        return $.ajax({
+                                url: 'https://api.spotify.com/v1/artists/' + top100artists[i],
+                                type: 'GET',
+                                headers: {
+                                    'Authorization': 'Bearer ' + reqheader
+                                },
+                                success: function(resultB) { }
+                        })
+                    }
+                    getAjax().done(function(response) {
+                        counter++;
+                        top100artists_genres += response.genres;
+                        $('#test-p-1').after('<p>' + response.genres + '</p>');
+                    });
+                    getAjax().fail(function(error) {
+                        top100artists_genres += 'null';
+                        $('#test-p-1').after('<p>null</p>');
+                    });
+                }
+                console.log(top100artists_genres.length);
+
+                resolve();
             }
-            console.log(top100artists_genres.length);
-        }
+        });
     });
 }
 
@@ -205,7 +203,7 @@ function doMLStuff() {
     'alternative metal', 'new rave', 'punk', 'indie soul', 'indie poptimism', 'nu metal', 'emo', 'indietronica',
     'indie soul', 'urban contemporary', 'pop rap', 'classic rock', 'trance', 'soft rock', 'experimental hip hop',
     'post-grunge', 'boy band'];
-    // var top10Genres = [];
+
     var i = 0;
     var genresMatched = 0;
     for (var i = 0; i < genreCountsKeys.length; i++) {
