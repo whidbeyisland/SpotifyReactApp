@@ -18,6 +18,7 @@ var top10Genres_opp;
 var curGenreIndex = 0;
 var playlist_id = '';
 var csv_path = 'client/src/playlist-by-genre.csv';
+var createPlaylist_done = false;
 
 const urlParams = new URLSearchParams(document.location.search);
 
@@ -147,38 +148,10 @@ function requestSongs() {
     });
 }
 
-/*
-function checkIfReady() {
-    console.log('got here 2');
-    var testdiv1 = document.getElementById('test-div-1');
-    var testp2 = document.getElementById('test-p-2');
-
-    if (requestSongs_done == false) {
-        if (testdiv1.children.length >= max * thisCycle + 1) {
-            thisCycle++;
-            if (thisCycle < maxCycles) {
-                requestSongs(max, thisCycle);
-            } else {
-                requestSongs_done = true;
-                doMLStuff();
-            }
-        }
-    } else if (generatePlaylist_done == true) {
-        console.log('got here 2a');
-        if (curGenreIndex < top10Genres.length) {
-            clearInterval(intervalId);
-            curGenreIndex++;
-            addSongsToPlaylist(playlist_id, top10Genres[curGenreIndex - 1]);
-        }
-    }
-    
-}
-*/
-
 function doMLStuff() {
     return new Promise(function (resolve, reject) {
         console.log('got here 3');
-        alert(counter);
+        // alert(counter);
         var testdiv1 = document.getElementById('test-div-1');
         var testp2 = document.getElementById('test-p-2');
 
@@ -259,7 +232,6 @@ function doMLStuff() {
         console.log(top10Genres_opp);
         console.log(top10Genres_opp.length);
         // top10Genres_opp = getLeastLikedGenres(top10Genres);
-        createPlaylist(top10Genres_opp);
 
         testp2.innerText = dictString;
         resolve();
@@ -268,44 +240,86 @@ function doMLStuff() {
 }
 
 function createPlaylist() {
-    return new Promise(function (resolve, reject) {
-        console.log('got here 4');
+    if (createPlaylist_done == false) {
+        return new Promise(function (resolve, reject) {
+            console.log('got here 4');
 
-        function getAjax() {
-            return $.ajax({
-                    url: 'https://api.spotify.com/v1/users/' + user_id + '/playlists',
-                    type: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': 'Bearer ' + reqheader2
-                    },
-                    data: JSON.stringify({
-                        'name': 'Worst Songs ' + Math.floor(Math.random() * 1000000).toString(),
-                        'description': 'Just try them!',
-                        'public': false
-                    }),
-                    dataType: 'json',
-                    success: function(resultA) {
-                        console.log('got here 4a');
-                        // generatePlaylist_done = true;
-                    },
-                    error: function(err) {
-                        alert(user_id + '..........');
-                        alert(JSON.stringify(err));
-                    }
+            $.ajax({
+                url: 'https://api.spotify.com/v1/users/' + user_id + '/playlists',
+                type: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + reqheader2
+                },
+                data: JSON.stringify({
+                    'name': 'Worst Songs ' + Math.floor(Math.random() * 1000000).toString(),
+                    'description': 'Just try them!',
+                    'public': false
+                }),
+                dataType: 'json',
+                success: function(resultA) {
+                    createPlaylist_done = true;
+                    console.log('got here 4a');
+                    console.log(resultA.id);
+                    playlist_id = resultA.id;
+                    resolve();
+                },
+                error: function(err) {
+                    createPlaylist_done = true;
+                    alert(user_id + '..........');
+                    alert(JSON.stringify(err));
+                    resolve();
+                }
             });
-        }
-        getAjax().done(function(response) {
-            playlist_id = response.id;
-            console.log('got here 4b');
-            console.log(playlist_id);
-            resolve();
+            /*
+            function getAjax() {
+                return $.ajax({
+                        url: 'https://api.spotify.com/v1/users/' + user_id + '/playlists',
+                        type: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'Authorization': 'Bearer ' + reqheader2
+                        },
+                        data: JSON.stringify({
+                            'name': 'Worst Songs ' + Math.floor(Math.random() * 1000000).toString(),
+                            'description': 'Just try them!',
+                            'public': false
+                        }),
+                        dataType: 'json',
+                        success: function(resultA) {
+                            createPlaylist_done = true;
+                            console.log('got here 4a');
+                            console.log(resultA.id);
+                            playlist_id = resultA.id;
+                            resolve();
+                        },
+                        error: function(err) {
+                            createPlaylist_done = true;
+                            alert(user_id + '..........');
+                            alert(JSON.stringify(err));
+                            resolve();
+                        }
+                });
+            }
+            */
+            /*
+            getAjax().done(function(response) {
+                createPlaylist_done = true;
+                playlist_id = response.id;
+                console.log('got here 4b');
+                console.log(playlist_id);
+                resolve();
+            });
+            getAjax().fail(function(err) {
+                createPlaylist_done = true;
+                alert(JSON.stringify(err));
+                resolve();
+            });
+            */
         });
-        getAjax().fail(function(err) {
-            alert(JSON.stringify(err));
-        });
-    });
+    }
 }
 
 function addSongsToPlaylistAllGenres() {
