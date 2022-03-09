@@ -6,7 +6,6 @@ import SpotifyDivs from "./SpotifyDivs.js";
 import SpotifyButton from "./SpotifyButton.js";
 import SongArtworkComponent from "./SongArtworkComponent.js";
 import Button from "react-bootstrap/Button";
-//import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
     constructor(props) {
