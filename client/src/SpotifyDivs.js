@@ -9,7 +9,6 @@ var max = 50;
 var maxCycles = 5;
 var thisCycle = 0;
 var special_value;
-// var intervalId;
 var top10Genres = new Array();
 var top10Genres_opp;
 var curGenreIndex = 0;
@@ -161,7 +160,6 @@ function doMLStuff() {
         for (var i = 0; i < genreCountsKeys.length; i++) {
             dictString += genreCountsKeys[i] + ': ' + genreCounts[genreCountsKeys[i]] + '\n';
         }
-        // console.log(dictString);
         
         //allowedGenres: just setting as a placeholder for now
         var allowedGenres = ['pop', 'rock', 'country', 'dance pop', 'indie rock', 'alternative rock', 'permanent wave',
@@ -180,7 +178,7 @@ function doMLStuff() {
                 }
             }
         }
-        // coati: just for testing
+        // coati: placeholder opposite-genres just for testing
         top10Genres_opp = [
             'rock', 'permanent wave', 'emo', 'alternative rock', 'indie rock', 'punk', 'indietronica', 'experimental hip hop',
             'new rave', 'soft rock'
