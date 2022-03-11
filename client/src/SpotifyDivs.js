@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "./App.css";
 import { user_id, reqheader, reqheader2 } from './config';
+import { genreSongIds } from './GenreSongIds';
 import reportWebVitals from './reportWebVitals';
 import $ from 'jquery';
 
@@ -264,6 +265,8 @@ function getSongsOneGenre(_genre) {
     //coati: return songs from playlist of each genre instead
 
     try {
+        //coati: just testing
+        console.log(genreSongIds);
         switch (_genre) {
             case 'alternative rock':
                 return ['spotify:track:0KEhlgtlk0HuqBIqfGCGdF'];
