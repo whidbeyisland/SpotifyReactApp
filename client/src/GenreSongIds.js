@@ -10,6 +10,33 @@ export var genreSongIds = [
         'spotify:track:4wd09wCccmxUB7XVJp0RNn', //Wilco - Jesus, Etc.
         ''
     ],
+    // bollywood
+    [
+        'spotify:track:2JCLRkEif68A1hG4IZ7baT', //G.V. Prakash - Laalijo Laalijo
+        'spotify:track:5h3oTrX9BhkBNQ2hLqpZN9', //Haricharan - Bhaje Bhaaje
+        'spotify:track:30nBtzzMdm8EXQK9QtiJVX', //M.M. Keeravani - Roopaay
+        'spotify:track:0tzmadvU2Pj1QohEvXHEUe', //Runeka Arun - Endaro
+        'spotify:track:3VVceLm7DTR525LShy8W4x', //Sandeep - Nuvvna Nuvvena
+        ''
+    ],
+    // black metal
+    [
+        'spotify:track:1EU3bbM4z1kt2hUcxiqSv9', //Bury Your Dead - Without You
+        'spotify:track:6l3A2EWZSOA8LTMmzRCyD3', //Deafheaven - Dream House
+        'spotify:track:257bEZ22RZz4epQ4YHkTKP', //Oceano - District of Misery
+        'spotify:track:41EyBbpGAgA75pDpQFUjN9', //Rings of Saturn - Servant of This Sentience
+        'spoiler:track:0cPaBdPEXviKoAjcWJqI9M', //Whitechapel - Possession
+        ''
+    ],
+    // country road
+    [
+        'spotify:track:2YMhrXQYKkm4kXLcXKKd5z', //Dustin Lynch - Small Town Boy
+        'spotify:track:6IxMsvPvXebfzrNzLFDMan', //Green River Ordinance - Come On
+        'spotify:track:4rTeKmdppkWFDf4kbhGyLU', //Jason Isbell - Relatively Easy
+        'spotify:track:26AGhzVb4qXRy1QBMR7lzG', //Josh Kelley - Georgia Clay
+        'spotify:track:4GGvLe0rAVoqGIg7aZnxBC', //Uncle Tupelo - Graveyard Shift
+        ''
+    ],
     // experimental hip hop
     [
         'spotify:track:09rZgZRDbTpKwtACzo0teB', //Busdriver - Eat Rich
@@ -18,6 +45,15 @@ export var genreSongIds = [
         'spotify:track:6Mnf7IPJmv9gBh921JXioZ', //Flobots - Rise
         'spotify:track:7fHqVBM914EJjzujOnUBFz', //Ho99o9 - Bone Collector
         'spotify:track:7satW8tFLasyZbftvrWFBP', //Run the Jewels - Legend Has It
+        ''
+    ],
+    // free jazz
+    [
+        'spotify:track:0Otf1ZfYNIjhqFIuJk0fsy', //Art Tatum - Tea for Two
+        'spotify:track:1jji1sWxZOo7eWnXifT7yP', //Chick Corea - Spain
+        'spotify:track:6ZgaUtMlUzUf7SqbUUnfbu', //John Coltrane - Blue Train
+        'spotify:track:0XBDgnZFhL27Y46oVknBPE', //Paul Desmond - Black Orpheus Theme
+        'spotify:track:7HVLRiHEzNYuNlbKYy3JVq', //Weather Report - Cucumber Slumber
         ''
     ],
     // indie poptimism
@@ -115,6 +151,15 @@ export var genreSongIds = [
         'spotify:track:10tdqQKFhddpkjzxllTVRj', //Seal - Crazy
         ''
     ],
+    // soul
+    [
+        'spotify:track:5gQCUf4lfy6GpuhdPzxQ6B', //Brick - Dazz
+        'spotify:track:4tCdoXt7EiwZZhMevxmY8u', //Dr. John - Down in New Orleans
+        'spotify:track:3VZmChrnVW8JK6ano4gSED', //Marvin Gaye - Sexual Healing
+        'spotify:track:0upp5QtBuH79XP1Eyd39r7', //Quincy Jones feat. Little Richard - Money Is
+        'spotify:track:68DqLs1hv7zI08EBvu53wV', //Sly & the Family Stone - Stand!
+        ''
+    ]
 ];
 
 export default { genreSongIds: genreSongIds } 
