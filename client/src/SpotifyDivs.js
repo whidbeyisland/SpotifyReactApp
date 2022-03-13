@@ -262,11 +262,14 @@ function addSongsToPlaylistOneGenre() {
 }
 
 function getSongsOneGenre(_genre) {
-    //coati: return songs from playlist of each genre instead
+    //select the appropriate genre playlist, and pick a random song from that genre
 
     try {
-        //coati: just testing
         console.log(genreSongIds);
+        genre_playlist = genreSongIds[genre];
+        var genre_playlist_idx = Math.floor(Math.random() * (genre_playlist.length - 1));
+        return genre_playlist[genre_playlist_idx];
+        /*
         switch (_genre) {
             case 'alternative rock':
                 return ['spotify:track:0KEhlgtlk0HuqBIqfGCGdF'];
@@ -297,6 +300,7 @@ function getSongsOneGenre(_genre) {
             default:
                 return ['spotify:track:1nedyHXLtbomGOaa7BOwYl'];
         }
+        */
     }
     catch {
         console.log('Retrieving songs failed');
