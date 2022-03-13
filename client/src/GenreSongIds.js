@@ -1,4 +1,7 @@
-var genreSongIds = new Object();
+let testexport = new Object();
+testexport['testparam'] = "test param";
+
+let genreSongIds = new Object();
 
 genreSongIds['alternative rock'] = [
     'spotify:track:0HDaKOlVAfUWXdFR2RhBtN', //311 - Down
@@ -145,4 +148,4 @@ genreSongIds['soul'] = [
     ''
 ];
 
-export default { genreSongIds: genreSongIds } 
+export { testexport, genreSongIds };

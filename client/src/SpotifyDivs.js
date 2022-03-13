@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "./App.css";
 import { user_id, reqheader, reqheader2 } from './config';
-import { genreSongIds } from './GenreSongIds';
+import { genreSongIds } from './GenreSongIds'; 
 import reportWebVitals from './reportWebVitals';
 import $ from 'jquery';
 
@@ -262,47 +262,17 @@ function addSongsToPlaylistOneGenre() {
 }
 
 function getSongsOneGenre(_genre) {
-    //select the appropriate genre playlist, and pick a random song from that genre
+    // select the appropriate genre playlist, and pick a random song from that genre,
+    // from the GenreSongIds.js module
 
     try {
         console.log(genreSongIds);
-        genre_playlist = genreSongIds[genre];
+        var genre_playlist = genreSongIds[_genre];
         var genre_playlist_idx = Math.floor(Math.random() * (genre_playlist.length - 1));
         return genre_playlist[genre_playlist_idx];
-        /*
-        switch (_genre) {
-            case 'alternative rock':
-                return ['spotify:track:0KEhlgtlk0HuqBIqfGCGdF'];
-            case 'experimental hip hop':
-                return ['spotify:track:4pSbdUWj7FrZRjgxQOISIL'];
-            case 'indie poptimism':
-                return ['spotify:track:3FpEXAupLwCHwzeUBxF99S'];
-            case 'indie rock':
-                return ['spotify:track:19Ov4l8mtvCT1iEUKks4aM'];
-            case 'indie soul':
-                return ['spotify:track:7kC97zPE0PxrcItXyGdk8P'];
-            case 'indietronica':
-                return ['spotify:track:3VhBuvzzuGUuh7nyJJvGLk'];
-            case 'new rave':
-                return ['spotify:track:048AQ5XBnvStuTn7X2pGSY'];
-            case 'nu metal':
-                return ['spotify:track:7mQwxVogsnpR3h6AJLQLlR'];
-            case 'permanent wave':
-                return ['spotify:track:7oK3Hn5fli8uCS1eiD3lBS'];
-            case 'pop':
-                return ['spotify:track:7xbWAw3LMgRMn4omR5yVn3'];
-            case 'punk':
-                return ['spotify:track:64yrDBpcdwEdNY9loyEGbX'];
-            case 'rock':
-                return ['spotify:track:0qjfjKFoP7LaqLI2KI9M1Q'];
-            case 'soft rock':
-                return ['spotify:track:07E5tOPjL9R54pkeOPTLo1'];
-            default:
-                return ['spotify:track:1nedyHXLtbomGOaa7BOwYl'];
-        }
-        */
     }
     catch {
+        // sample song
         console.log('Retrieving songs failed');
         return ['spotify:track:1nedyHXLtbomGOaa7BOwYl'];
     }
