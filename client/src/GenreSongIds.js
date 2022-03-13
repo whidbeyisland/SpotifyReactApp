@@ -1,6 +1,3 @@
-let testexport = new Object();
-testexport['testparam'] = "test param";
-
 let genreSongIds = new Object();
 
 genreSongIds['alternative rock'] = [
@@ -148,4 +145,4 @@ genreSongIds['soul'] = [
     ''
 ];
 
-export { testexport, genreSongIds };
+export { genreSongIds };

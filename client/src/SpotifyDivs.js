@@ -14,7 +14,6 @@ var top10Genres = new Array();
 var top10Genres_opp;
 var curGenreIndex = 0;
 var playlist_id = '';
-var csv_path = 'client/src/playlist-by-genre.csv';
 var createPlaylist_done = false;
 
 const urlParams = new URLSearchParams(document.location.search);
@@ -255,6 +254,9 @@ function addSongsToPlaylistOneGenre() {
                 resolve();
             },
             error: function(err) {
+                alert('Error adding songs to new playlist');
+                alert(songsThisGenre);
+                alert(curGenre);
                 alert(JSON.stringify(err));
             }
         });
@@ -264,12 +266,10 @@ function addSongsToPlaylistOneGenre() {
 function getSongsOneGenre(_genre) {
     // select the appropriate genre playlist, and pick a random song from that genre,
     // from the GenreSongIds.js module
-
     try {
-        console.log(genreSongIds);
         var genre_playlist = genreSongIds[_genre];
         var genre_playlist_idx = Math.floor(Math.random() * (genre_playlist.length - 1));
-        return genre_playlist[genre_playlist_idx];
+        return [genre_playlist[genre_playlist_idx]]; // must be in an array
     }
     catch {
         // sample song
